@@ -92,3 +92,43 @@ int EmployeeRow::clear(){
 	while(!remove());
 	return 0;
 }
+
+void TimeCell::timeCpy(Time t){
+	time.timestamp=t.timestamp;
+}
+
+void TimeStack::insert(Time t){
+	TimeCell* new_time;
+	new_time=(TimeCell*)malloc(sizeof(TimeCell));
+	new_time->timeCpy(t);
+	new_time->next=NULL;
+
+	if(first!=NULL){
+		TimeCell* pivo=first;
+			while(pivo->next!=NULL){				
+				pivo=pivo->next;
+			}
+			pivo->next=new_time;
+	}else{
+		first=new_time;
+	}
+	len++;
+}
+
+void TimeStack::print(){
+	TimeCell* pivo=first;
+	Serial.print("[");
+	while (pivo!=NULL){
+		Serial.print(pivo->time.timestamp);
+		if(pivo->next!=NULL){
+			Serial.print(",");
+		}
+		pivo=pivo->next;
+	}
+	Serial.print("] length: ");
+	Serial.println(len);
+}
+
+int TimeStack::remove(){
+	
+}

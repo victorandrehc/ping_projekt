@@ -41,5 +41,35 @@ public:
 	
 };
 
+class Time{
+public:
+	long timestamp;
+	Time(){};
+	~Time(){};
+};
+
+class TimeCell{
+public:
+	Time time;
+	TimeCell* next;
+	TimeCell(){};
+	~TimeCell(){};
+	void timeCpy(Time t);	
+};
+
+class TimeStack{
+public:
+	TimeCell* first;
+	int len;
+	TimeStack(){
+		len=0;
+		first=NULL;
+	};
+	~TimeStack(){};
+	void insert(Time t);
+	void print();
+	int remove();
+	int clear(){};
+};
 
 #endif
