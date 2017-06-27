@@ -2,5 +2,5 @@
 #include "tad_clock_system.h"
 
 void function(){
-	Serial.println("Hello Wsorld");
+	Serial.println("Hello World");
 }
