@@ -1,10 +1,63 @@
 #include <Arduino.h>
 #include "tad_clock_system.h"
 
+
+void TimeCell::timeCpy(Time t){
+	time.timestamp=t.timestamp;
+}
+
+void TimeRow::insert(Time t){
+	TimeCell* new_time;
+	new_time=(TimeCell*)malloc(sizeof(TimeCell));
+	new_time->timeCpy(t);
+	new_time->next=NULL;
+
+	if(first!=NULL){
+		TimeCell* pivo=first;
+			while(pivo->next!=NULL){				
+				pivo=pivo->next;
+			}
+			pivo->next=new_time;
+	}else{
+		first=new_time;
+	}
+	len++;
+}
+
+void TimeRow::print(){
+	TimeCell* pivo=first;
+	Serial.print("[");
+	while (pivo!=NULL){
+		Serial.print(pivo->time.timestamp);
+		if(pivo->next!=NULL){
+			Serial.print(",");
+		}
+		pivo=pivo->next;
+	}
+	Serial.print("] length: ");
+	Serial.println(len);
+}
+
+int TimeRow::remove(){
+	if(first!=NULL){
+		TimeCell* removed_time=first;
+		first=removed_time->next;
+		free(removed_time);
+		len--;
+		return 0;
+	}
+	return 1;	
+}
+int TimeRow::clear(){
+	while(!remove());
+	return 0;
+}
+
 void EmployeeCell::employeeCpy(Employee e){
 	//employee.name=e.name;
 	strcpy(employee.name,e.name);
 	employee.id=e.id;
+	employee.timestamps=e.timestamps;
 }
 
 void EmployeeRow::insert(Employee e){
@@ -77,6 +130,13 @@ EmployeeCell* EmployeeRow::find(char* name,int* position){
 	return NULL;	
 }
 
+Employee* EmployeeRow::findEmployee(int id,int* position){
+	return &((this->find(id,position))->employee);
+}
+Employee* EmployeeRow::findEmployee(char* name,int* position){
+	return &((this->find(name,position))->employee);
+}
+
 int EmployeeRow::remove(){
 	if(first!=NULL){
 		EmployeeCell* removed_employee=first;
@@ -89,57 +149,6 @@ int EmployeeRow::remove(){
 }
 
 int EmployeeRow::clear(){
-	while(!remove());
-	return 0;
-}
-
-void TimeCell::timeCpy(Time t){
-	time.timestamp=t.timestamp;
-}
-
-void TimeRow::insert(Time t){
-	TimeCell* new_time;
-	new_time=(TimeCell*)malloc(sizeof(TimeCell));
-	new_time->timeCpy(t);
-	new_time->next=NULL;
-
-	if(first!=NULL){
-		TimeCell* pivo=first;
-			while(pivo->next!=NULL){				
-				pivo=pivo->next;
-			}
-			pivo->next=new_time;
-	}else{
-		first=new_time;
-	}
-	len++;
-}
-
-void TimeRow::print(){
-	TimeCell* pivo=first;
-	Serial.print("[");
-	while (pivo!=NULL){
-		Serial.print(pivo->time.timestamp);
-		if(pivo->next!=NULL){
-			Serial.print(",");
-		}
-		pivo=pivo->next;
-	}
-	Serial.print("] length: ");
-	Serial.println(len);
-}
-
-int TimeRow::remove(){
-	if(first!=NULL){
-		TimeCell* removed_time=first;
-		first=removed_time->next;
-		free(removed_time);
-		len--;
-		return 0;
-	}
-	return 1;	
-}
-int TimeRow::clear(){
 	while(!remove());
 	return 0;
 }
