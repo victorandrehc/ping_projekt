@@ -57,19 +57,19 @@ public:
 	void timeCpy(Time t);	
 };
 
-class TimeStack{
+class TimeRow{
 public:
 	TimeCell* first;
 	int len;
-	TimeStack(){
+	TimeRow(){
 		len=0;
 		first=NULL;
 	};
-	~TimeStack(){};
+	~TimeRow(){};
 	void insert(Time t);
 	void print();
 	int remove();
-	int clear(){};
+	int clear();
 };
 
 #endif

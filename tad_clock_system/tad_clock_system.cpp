@@ -97,7 +97,7 @@ void TimeCell::timeCpy(Time t){
 	time.timestamp=t.timestamp;
 }
 
-void TimeStack::insert(Time t){
+void TimeRow::insert(Time t){
 	TimeCell* new_time;
 	new_time=(TimeCell*)malloc(sizeof(TimeCell));
 	new_time->timeCpy(t);
@@ -115,7 +115,7 @@ void TimeStack::insert(Time t){
 	len++;
 }
 
-void TimeStack::print(){
+void TimeRow::print(){
 	TimeCell* pivo=first;
 	Serial.print("[");
 	while (pivo!=NULL){
@@ -129,6 +129,17 @@ void TimeStack::print(){
 	Serial.println(len);
 }
 
-int TimeStack::remove(){
-	
+int TimeRow::remove(){
+	if(first!=NULL){
+		TimeCell* removed_time=first;
+		first=removed_time->next;
+		free(removed_time);
+		len--;
+		return 0;
+	}
+	return 1;	
+}
+int TimeRow::clear(){
+	while(!remove());
+	return 0;
 }
