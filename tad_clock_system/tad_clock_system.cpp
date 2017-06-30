@@ -26,7 +26,7 @@ void TimeRow::insert(Time t){
 
 void TimeRow::print(){
 	TimeCell* pivo=first;
-	Serial.print("[");
+	Serial.print("TIMESTAMPS: [");
 	while (pivo!=NULL){
 		Serial.print(pivo->time.timestamp);
 		if(pivo->next!=NULL){
@@ -35,7 +35,7 @@ void TimeRow::print(){
 		pivo=pivo->next;
 	}
 	Serial.print("] length: ");
-	Serial.println(len);
+	Serial.print(len);
 }
 
 int TimeRow::remove(){
@@ -52,6 +52,18 @@ int TimeRow::clear(){
 	while(!remove());
 	return 0;
 }
+
+Employee::Employee(String name_,int id_){
+	//timestamps=NULL;
+	id=id_;
+	name_.toCharArray(name,NAME_LEN);
+};
+
+Employee::Employee(char*name_,int id_){
+	//timestamps=NULL;
+	id=id_;
+	strcpy(name,name_);
+};
 
 void EmployeeCell::employeeCpy(Employee e){
 	//employee.name=e.name;
@@ -80,15 +92,18 @@ void EmployeeRow::insert(Employee e){
 
 void EmployeeRow::print(){
 	EmployeeCell* pivo=first;
-	Serial.print("[");
+	Serial.println("EMPLOYEES\n[");
 	while (pivo!=NULL){
+		Serial.print("    ");
 		Serial.print(pivo->employee.name);
+		Serial.print(" ");
+		pivo->employee.timestamps.print();
 		if(pivo->next!=NULL){
-			Serial.print(",");
+			Serial.println(",");
 		}
 		pivo=pivo->next;
 	}
-	Serial.print("] length: ");
+	Serial.print("\n] length: ");
 	Serial.println(len);
 }
 
