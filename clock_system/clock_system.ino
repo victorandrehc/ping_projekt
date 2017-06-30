@@ -68,7 +68,7 @@ unsigned long deltat(){
   return(millis()-t);
 }
 void resett(){
-  t=millis();
+  t=millis(); 
 }
 void printState(){
   switch (state) {
