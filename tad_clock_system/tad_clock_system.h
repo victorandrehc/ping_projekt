@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <inttypes.h>
 #define NAME_LEN 10
+#define ID_LEN 5
 
 
 
@@ -43,14 +44,19 @@ class Employee
 private:
 public:
 	char name[NAME_LEN];
-	uint64_t id;
+	unsigned char id[ID_LEN];
+	
 	TimeRow timestamps;
 	Employee(){};
-	Employee(char*name_,uint64_t id_);
-	Employee(String name_,uint64_t id_);
+	Employee(String name_,unsigned char* id_);
+	Employee(char*name_,unsigned char* id_);
 	~Employee(){
 		timestamps.clear();
 	};
+	int compareId(unsigned char * id_);
+	void printId(unsigned char * id_);
+	void printId();
+	
 };
 
 class EmployeeCell{
@@ -74,9 +80,9 @@ public:
 	~EmployeeRow(){};
 	void insert(Employee e);
 	void print();
-	EmployeeCell* find(uint64_t id,int* position);
+	EmployeeCell* find(unsigned char* id,int* position);
 	EmployeeCell* find(char* name,int* position);
-	Employee* findEmployee(uint64_t id,int* position);
+	Employee* findEmployee(unsigned char* id,int* position);
 	Employee* findEmployee(char *name,int* position);
 	int remove();
 	int clear();

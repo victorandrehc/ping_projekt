@@ -53,22 +53,53 @@ int TimeRow::clear(){
 	return 0;
 }
 
-Employee::Employee(String name_,uint64_t id_){
+Employee::Employee(String name_,unsigned char * id_){
 	//timestamps=NULL;
-	id=id_;
+	//id=id_;
+	for(int i=0;i<ID_LEN;i++){
+		id[i]=id_[i];
+	}
 	name_.toCharArray(name,NAME_LEN);
 };
 
-Employee::Employee(char*name_,uint64_t id_){
+Employee::Employee(char*name_,unsigned char * id_){
 	//timestamps=NULL;
-	id=id_;
+	//id=id_;
+	for(int i=0;i<ID_LEN;i++){
+		id[i]=id_[i];
+	}
 	strcpy(name,name_);
 };
 
+int Employee::compareId(unsigned char * id_){
+	int ret=0;
+	for(int i=0;i<ID_LEN;i++){
+		//Serial.println("-----");
+		//Serial.println(id[i],HEX);
+		//Serial.println(id_[i],HEX);
+		ret+=id[i]-id_[i];
+	}
+	//Serial.print(ret);
+	return ret;
+}
+
+void Employee::printId(unsigned char * id_){
+	for(int i=0;i<ID_LEN;i++){
+		Serial.print(id_[i],HEX);
+	}
+}
+void Employee::printId(){
+	for(int i=0;i<ID_LEN;i++){
+		Serial.print(id[i],HEX);
+	}
+}
 void EmployeeCell::employeeCpy(Employee e){
 	//employee.name=e.name;
 	strcpy(employee.name,e.name);
-	employee.id=e.id;
+	for(int i=0;i<ID_LEN;i++){
+		employee.id[i]=e.id[i];
+	}
+	//employee.id=e.id;
 	employee.timestamps=e.timestamps;
 }
 
@@ -107,14 +138,14 @@ void EmployeeRow::print(){
 	Serial.println(len);
 }
 
-EmployeeCell* EmployeeRow::find(uint64_t id,int* position){
+EmployeeCell* EmployeeRow::find(unsigned char * id,int* position){
 	if(first!=NULL){
-		if(first->employee.id==id){
+		if(first->employee.compareId(id)==0){
 			*position=0;
 			return first;
 		}else{
 			EmployeeCell* pivo=first;
-			for(*position=1; pivo->next!=NULL && pivo->next->employee.id!=id;*position=*position+1){				
+			for(*position=1; pivo->next!=NULL && pivo->next->employee.compareId(id);*position=*position+1){				
 				pivo=pivo->next;
 			}
 			if(pivo->next!=NULL){
@@ -145,7 +176,7 @@ EmployeeCell* EmployeeRow::find(char* name,int* position){
 	return NULL;	
 }
 
-Employee* EmployeeRow::findEmployee(uint64_t id,int* position){
+Employee* EmployeeRow::findEmployee(unsigned char * id,int* position){
 	return &((this->find(id,position))->employee);
 }
 Employee* EmployeeRow::findEmployee(char* name,int* position){

@@ -11,7 +11,7 @@ const unsigned long t_debounce=50;
 const unsigned long one_hour=3600*1000;
 
 unsigned long t_state=0,t_ntp=0;
-typedef enum states_t {READING_EMPLOYEE,INTERMEDIARY_1,WRITING_NEW_EMPLOYEE,INTERMEDIARY_2};
+enum states_t {READING_EMPLOYEE,INTERMEDIARY_1,WRITING_NEW_EMPLOYEE,INTERMEDIARY_2};
 states_t state;
 
 //FIFO GLOBAL VARIABLES/OBJECTS
@@ -30,11 +30,13 @@ void printState();
 
 void readEmployee();
 
+unsigned char v1[5]={0xD6,0xFC,0x83,0x8D,0x24},v2[5]={0xD6,0xFC,0x83,0x8D,0x23};
+
 void setup() {
   Serial.begin(9600);
 
   //FIFO INIT
-  Employee employees_array[]={Employee("VICTOR",21425213114136),Employee("PAUL",2)};
+  Employee employees_array[]={Employee("VICTOR",v1),Employee("PAUL",v2)};
   for(int i=0;i<2;i++){
     //TODO: make it read from card
     employees_row.insert(employees_array[i]);
@@ -121,23 +123,18 @@ void readEmployee(){
     /* If so then get its serial number */
     RC522.readCardSerial();
     Serial.println("Card detected:");
-    uint64_t v=0;
-    for(int i=0;i<5;i++)
-    {
-    //Serial.print(RC522.serNum[i],DEC);
-    //Serial.println(RC522.serNum[i],HEX); //to print card detail in Hexa Decimal format
-      v=(v<<8)|(uint64_t)RC522.serNum[i];
+    for(int i=0;i<5;i++){
+      Serial.print(RC522.serNum[i],HEX); //to print card detail in Hexa Decimal format
     }
-    Serial.print( (v) ); //TODO: insert mechanism to print a uint64_t
+    Serial.println();
+    int p;
+    Serial.println((employees_row.find(RC522.serNum,&p))->employee.name);
+    (employees_row.find(RC522.serNum,NULL))->employee.printId();
     Serial.println();
     Serial.println();
   }
   delay(1000);
 }
-
-
-
-
 
 
 
