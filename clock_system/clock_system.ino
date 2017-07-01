@@ -8,7 +8,8 @@
 //FSM GLOBAL VARIABLES/OBJECTS
 const int change_state_button=45;
 const unsigned long t_debounce=50;
-const unsigned long one_hour=3600*1000;
+const unsigned long one_second=1000;
+uint8_t number_seconds=0,number_minutes=0;
 
 unsigned long t_state=0,t_ntp=0;
 enum states_t {READING_EMPLOYEE,INTERMEDIARY_1,WRITING_NEW_EMPLOYEE,INTERMEDIARY_2};
@@ -85,10 +86,19 @@ void loop() {
         state=READING_EMPLOYEE;
         Serial.println("RESETING FSM");
   }
-  if(millis()-t_ntp>=one_hour){
+  if(millis()-t_ntp>=one_second){
+    //ONE minute passed
     t_ntp=millis();
-    //TODO: ASK NTP FOR THE HOUR
-    //IF IT IS FROM 23 TO 24 send to Google sheets
+    number_seconds++;
+    if(number_seconds>=60){
+      number_seconds=0;
+      number_minutes++;      
+    }
+    if(number_minutes>=60){
+      number_minutes=0;
+      //TODO: ASK NTP FOR THE HOUR
+      //IF IT IS FROM 23 TO 24 send to Google sheets
+    }
   }
 
 }
@@ -135,6 +145,9 @@ void readEmployee(){
   }
   delay(1000);
 }
+
+
+
 
 
 
