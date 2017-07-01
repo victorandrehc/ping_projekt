@@ -2,6 +2,7 @@
 #define TAD_CLOCK_SYSTEM_H
 
 #include <Arduino.h>
+#include <inttypes.h>
 #define NAME_LEN 10
 
 
@@ -42,11 +43,11 @@ class Employee
 private:
 public:
 	char name[NAME_LEN];
-	int id;
+	uint64_t id;
 	TimeRow timestamps;
 	Employee(){};
-	Employee(char*name_,int id_);
-	Employee(String name_,int id_);
+	Employee(char*name_,uint64_t id_);
+	Employee(String name_,uint64_t id_);
 	~Employee(){
 		timestamps.clear();
 	};
@@ -73,9 +74,9 @@ public:
 	~EmployeeRow(){};
 	void insert(Employee e);
 	void print();
-	EmployeeCell* find(int id,int* position);
+	EmployeeCell* find(uint64_t id,int* position);
 	EmployeeCell* find(char* name,int* position);
-	Employee* findEmployee(int id,int* position);
+	Employee* findEmployee(uint64_t id,int* position);
 	Employee* findEmployee(char *name,int* position);
 	int remove();
 	int clear();

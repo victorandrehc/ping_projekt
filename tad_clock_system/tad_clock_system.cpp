@@ -53,13 +53,13 @@ int TimeRow::clear(){
 	return 0;
 }
 
-Employee::Employee(String name_,int id_){
+Employee::Employee(String name_,uint64_t id_){
 	//timestamps=NULL;
 	id=id_;
 	name_.toCharArray(name,NAME_LEN);
 };
 
-Employee::Employee(char*name_,int id_){
+Employee::Employee(char*name_,uint64_t id_){
 	//timestamps=NULL;
 	id=id_;
 	strcpy(name,name_);
@@ -107,7 +107,7 @@ void EmployeeRow::print(){
 	Serial.println(len);
 }
 
-EmployeeCell* EmployeeRow::find(int id,int* position){
+EmployeeCell* EmployeeRow::find(uint64_t id,int* position){
 	if(first!=NULL){
 		if(first->employee.id==id){
 			*position=0;
@@ -145,7 +145,7 @@ EmployeeCell* EmployeeRow::find(char* name,int* position){
 	return NULL;	
 }
 
-Employee* EmployeeRow::findEmployee(int id,int* position){
+Employee* EmployeeRow::findEmployee(uint64_t id,int* position){
 	return &((this->find(id,position))->employee);
 }
 Employee* EmployeeRow::findEmployee(char* name,int* position){
