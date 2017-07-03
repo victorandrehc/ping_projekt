@@ -198,3 +198,45 @@ int EmployeeRow::clear(){
 	while(!remove());
 	return 0;
 }
+
+TimeHandler::TimeHandler(){
+	t=millis();
+	current_time=seventy_years+t/1000;
+	//TODO: make current_time actualy syncs with the ntp 
+	last_sync_time=current_time;
+}
+void TimeHandler::updateTime(){
+	if(timeToSync()==true ){
+		//TODO: Sync time and remove code below
+		t=millis();
+	}else{
+		unsigned long new_t=millis();
+		current_time+=(new_t-t)/1000;
+		if(new_t-t>=1000){
+			t=new_t;			
+			Serial.print("TIME: ");
+			Serial.println(current_time-seventy_years);
+			Serial.println(new_t);
+		}
+	}
+}
+
+void TimeHandler::printDate(){
+	
+
+	unsigned long epoch=current_time-seventy_years;
+	Serial.print((epoch  % 86400L) / 3600); // print the hour (86400 equals secs per day)
+    Serial.print(':');
+    if (((epoch % 3600) / 60) < 10) {
+      // In the first 10 minutes of each hour, we'll want a leading '0'
+      Serial.print('0');
+    }
+    Serial.print((epoch  % 3600) / 60); // print the minute (3600 equals secs per minute)
+    Serial.print(':');
+    if ((epoch % 60) < 10) {
+      // In the first 10 seconds of each minute, we'll want a leading '0'
+      Serial.print('0');
+    }
+    Serial.print(epoch % 60); // print the second
+  
+}

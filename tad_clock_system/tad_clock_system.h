@@ -10,7 +10,7 @@
 
 class Time{
 public:
-	long timestamp;
+	unsigned long timestamp;
 	Time(){};
 	~Time(){};
 };
@@ -86,6 +86,29 @@ public:
 	Employee* findEmployee(char *name,int* position);
 	int remove();
 	int clear();
+	
+};
+
+class TimeHandler{
+private:
+	const unsigned long seventy_years = 2208988800UL;
+	unsigned long t;
+	unsigned long last_sync_time;
+	unsigned long current_time;
+	bool timeToSync(){
+		//return (current_time-last_sync_time>=3600 || millis()<t);//3600 Numbers of seconds in one hour
+		return false;//TODO: Remove this when actually updates time
+	}
+public:
+	TimeHandler();
+	~TimeHandler(){};
+	void updateTime();
+	void printDate();
+	unsigned long getCurrentTime(){
+		return current_time;
+	}
+
+
 	
 };
 

@@ -11,12 +11,15 @@ const unsigned long t_debounce=50;
 const unsigned long one_second=1000;
 uint8_t number_seconds=0,number_minutes=0;
 
-unsigned long t_state=0,t_ntp=0;
+unsigned long t_state=0;
 enum states_t {READING_EMPLOYEE,INTERMEDIARY_1,WRITING_NEW_EMPLOYEE,INTERMEDIARY_2};
 states_t state;
 
 //FIFO GLOBAL VARIABLES/OBJECTS
 EmployeeRow employees_row;
+
+//TIME HANDLER GLOBAL OBJECTS
+TimeHandler time;
 
 //RFID GLOBAL VARIABLES/OBJECTS
 const int SDA_DIO=9;
@@ -52,7 +55,6 @@ void setup() {
   state=READING_EMPLOYEE;
   pinMode(change_state_button, INPUT);
   t_state=millis();
-  t_ntp=millis();
 }
 
 void loop() {
@@ -86,20 +88,7 @@ void loop() {
         state=READING_EMPLOYEE;
         Serial.println("RESETING FSM");
   }
-  if(millis()-t_ntp>=one_second){
-    //ONE minute passed
-    t_ntp=millis();
-    number_seconds++;
-    if(number_seconds>=60){
-      number_seconds=0;
-      number_minutes++;      
-    }
-    if(number_minutes>=60){
-      number_minutes=0;
-      //TODO: ASK NTP FOR THE HOUR
-      //IF IT IS FROM 23 TO 24 send to Google sheets
-    }
-  }
+  time.updateTime();
 
 }
 
@@ -137,14 +126,29 @@ void readEmployee(){
       Serial.print(RC522.serNum[i],HEX); //to print card detail in Hexa Decimal format
     }
     Serial.println();
-    int p;
-    Serial.println((employees_row.find(RC522.serNum,&p))->employee.name);
-    (employees_row.find(RC522.serNum,NULL))->employee.printId();
+    EmployeeCell *emp=employees_row.find(RC522.serNum,NULL);
+    Serial.println(emp->employee.name);
+    emp->employee.printId();
+    Time timestamp;
+    timestamp.timestamp=time.getCurrentTime();
+    emp->employee.timestamps.insert(timestamp);
     Serial.println();
     Serial.println();
+    time.printDate();
+    Serial.println();
+    unsigned long t_delay=millis();
+    while(millis()-t_delay<=1000);
   }
-  delay(1000);
 }
+
+
+
+
+
+
+
+
+
 
 
 
