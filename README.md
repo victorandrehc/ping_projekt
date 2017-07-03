@@ -16,4 +16,4 @@ RST             D8
 3.3V            3.3.3V
 
 BUTTON:
-	45 -> change state button
+	45 -> change state button   
