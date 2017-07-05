@@ -222,9 +222,9 @@ void TimeHandler::updateTime(){
 		t=millis();
 	}else{
 		current_time=last_sync_time+(millis()-t)/1000;
-		Serial.print("TIME: ");
-		Serial.println(current_time-seventy_years);
-		Serial.println(millis());
+		//Serial.print("TIME: ");
+		//Serial.println(current_time-seventy_years);
+		//Serial.println(millis());
 	}
 }
 
