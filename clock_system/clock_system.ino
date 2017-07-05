@@ -140,19 +140,35 @@ void readEmployee(){
     /* If so then get its serial number */
     RC522.readCardSerial();
     Serial.println("Card detected:");
-    Employee *emp=employees_row.findEmployee(RC522.serNum,NULL);
-    Serial.println(emp->name);
-    emp->printId();
-
-    Time timestamp;
-    timestamp.timestamp=time.getCurrentTime();
-    emp->timestamps.insert(timestamp);
-    
+    for(int i=0;i<5;i++){
+      Serial.print(RC522.serNum[i],HEX); //to print card detail in Hexa Decimal format
+    }
     Serial.println();
+    int p;
+    Employee *emp=employees_row.findEmployee(RC522.serNum,&p);
+    if(emp!=NULL){
+      Serial.println(emp->name);
+      emp->printId();
+
+      Time timestamp;
+      timestamp.timestamp=time.getCurrentTime();
+      emp->timestamps.insert(timestamp);
+      
+      Serial.println();
+    }else{
+      Serial.println("EMPLOYEE NOT FOUND");
+    }    
     unsigned long t_delay=millis();
     while(millis()-t_delay<=1000);
   }
 }
+
+
+
+
+
+
+
 
 
 

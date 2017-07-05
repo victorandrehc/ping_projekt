@@ -77,10 +77,11 @@ int Employee::compareId(unsigned char * id_){
 		//Serial.println("-----");
 		//Serial.println(id[i],HEX);
 		//Serial.println(id_[i],HEX);
-		ret+=id[i]-id_[i];
+		if(id[i]!=id_[i]){
+			return 1;
+		}
 	}
-	//Serial.print(ret);
-	return ret;
+	return 0;
 }
 
 void Employee::printId(unsigned char * id_){
@@ -177,10 +178,20 @@ EmployeeCell* EmployeeRow::find(char* name,int* position){
 }
 
 Employee* EmployeeRow::findEmployee(unsigned char * id,int* position){
-	return &((this->find(id,position))->employee);
+	EmployeeCell* emp=find(id,position);
+	if(emp!=NULL){
+		return &(emp->employee);
+	}else{
+		return NULL;
+	}
 }
 Employee* EmployeeRow::findEmployee(char* name,int* position){
-	return &((this->find(name,position))->employee);
+	EmployeeCell* emp=find(name,position);
+	if(emp!=NULL){
+		return &(emp->employee);
+	}else{
+		return NULL;
+	}
 }
 
 int EmployeeRow::remove(){
@@ -210,14 +221,10 @@ void TimeHandler::updateTime(){
 		//TODO: Sync time and remove code below
 		t=millis();
 	}else{
-		unsigned long new_t=millis();
-		if(new_t-t>=1000){
-			current_time+=(new_t-t)/1000;
-			t=(new_t/1000)*1000;//it has to update everytime the thousand position on millis() changes			
-			Serial.print("TIME: ");
-			Serial.println(current_time-seventy_years);
-			Serial.println(new_t);
-		}
+		current_time=last_sync_time+(millis()-t)/1000;
+		Serial.print("TIME: ");
+		Serial.println(current_time-seventy_years);
+		Serial.println(millis());
 	}
 }
 
