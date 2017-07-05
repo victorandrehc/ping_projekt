@@ -199,6 +199,50 @@ int EmployeeRow::clear(){
 	return 0;
 }
 
+void EmployeeRow::populate(File file){
+  char name[NAME_LEN];
+  int i_name=0,i_id=0;
+  uint8_t byte_read_name;
+  if(file.available()){
+  	byte_read_name=file.read();
+  }
+  while(file.available() && byte_read_name!=NAME_SEPARATOR){
+  	name[i_name]=(char)byte_read_name;
+  	byte_read_name=file.read();
+  	i_name++;
+  }
+  Serial.print(name);
+  Serial.print(" ");
+  
+  unsigned char id[ID_LEN];
+  uint8_t byte_read_id[2];
+  for(int j=0;j<2;j++){
+  	if(file.available()){
+  		byte_read_id[j]=file.read();
+  	}	
+  }
+  while(file.available() && byte_read_id[1]!=ID_SEPARATOR){
+  	id[i_id]=(unsigned char)strtol(byte_read_id, NULL, 16);
+  	for(int j=0;j<2;j++){
+  		if(file.available()){
+  			byte_read_id[j]=file.read();
+  		}	
+  	}
+  	i_id++;
+  }
+  
+  for(int i=0;i<ID_LEN;i++){
+  	Serial.print(id[i],HEX);
+  }
+  Serial.println();
+  Employee emp(name,NULL);
+  //insert(emp);
+  /*if(file.available()){
+  	populate(file);
+  }*/
+  Serial.println("return");
+}
+
 TimeHandler::TimeHandler(){
 	t=millis();
 	current_time=seventy_years+t/1000;

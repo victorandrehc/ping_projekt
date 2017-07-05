@@ -2,9 +2,7 @@
 #include <SD.h>
 
 File root;
-
-void printDirectory(File dir, int numTabs);
-
+File getFile(File dir);
 
 void setup(){
   Serial.begin(9600);

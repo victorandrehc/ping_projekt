@@ -1,5 +1,6 @@
 #include <SPI.h>
 #include <RFID.h>
+#include <SD.h>
 
 #include "tad_clock_system.h"
 
@@ -28,6 +29,8 @@ const int RESET_DIO=8;
 //CREATE AN INSTANCE OF THE RFID LIBRARY
 RFID RC522(SDA_DIO, RESET_DIO);
 
+//CREATE AN FILE OBJECT
+File getFile(File dir);
 unsigned long deltat();
 void resett();
 void printState();
@@ -38,18 +41,30 @@ unsigned char v1[5]={0xD6,0xFC,0x83,0x8D,0x24},v2[5]={0xD6,0xFC,0x83,0x8D,0x23};
 
 void setup() {
   Serial.begin(9600);
+  SPI.begin(); 
+  //RFID INIT
+  RC522.init();
 
+  Serial.print("Initializing SD card...");
+  if (!SD.begin(4)) {
+    Serial.println("initialization failed!");
+    return;
+  }
+  Serial.println("initialization done.");
+  File root=SD.open("/");
+  File myFile=getFile(root);
+  
   //FIFO INIT
   Employee employees_array[]={Employee("VICTOR",v1),Employee("PAUL",v2)};
   for(int i=0;i<2;i++){
     //TODO: make it read from card
     employees_row.insert(employees_array[i]);
   }
+  //employees_row.populate(myFile);
   employees_row.print();
 
-  //RFID INIT
-  SPI.begin(); 
-  RC522.init();
+
+  
   
   //FSM INIT
   state=READING_EMPLOYEE;
@@ -117,27 +132,46 @@ void printState(){
   }
 }
 
+File getFile(File dir){
+  //returns object from the first file on the SD card
+  File entry;
+  entry=dir.openNextFile();
+  if(!entry){
+    Serial.println("Error");
+    while(true);
+  }else if(entry.isDirectory()){
+    return getFile(entry);
+  }else{
+    Serial.println(entry.name());
+    return SD.open(entry.name());
+  }
+}
+
 void readEmployee(){
   if (RC522.isCard()){
     /* If so then get its serial number */
     RC522.readCardSerial();
     Serial.println("Card detected:");
-    for(int i=0;i<5;i++){
-      Serial.print(RC522.serNum[i],HEX); //to print card detail in Hexa Decimal format
-    }
-    Serial.println();
     Employee *emp=employees_row.findEmployee(RC522.serNum,NULL);
     Serial.println(emp->name);
     emp->printId();
+
     Time timestamp;
     timestamp.timestamp=time.getCurrentTime();
     emp->timestamps.insert(timestamp);
-    Serial.println();
-    Serial.println();
-    time.printDate();
+    
     Serial.println();
     unsigned long t_delay=millis();
     while(millis()-t_delay<=1000);
   }
 }
+
+
+
+
+
+
+
+
+
 

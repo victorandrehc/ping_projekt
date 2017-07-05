@@ -3,8 +3,11 @@
 
 #include <Arduino.h>
 #include <inttypes.h>
+#include <SD.h>
 #define NAME_LEN 10
 #define ID_LEN 5
+#define NAME_SEPARATOR 0x3D
+#define ID_SEPARATOR 0x0A
 
 
 
@@ -86,6 +89,7 @@ public:
 	Employee* findEmployee(char *name,int* position);
 	int remove();
 	int clear();
+	void populate(File file);
 	
 };
 
