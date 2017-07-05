@@ -99,7 +99,7 @@ private:
 	unsigned long last_sync_time;
 	unsigned long current_time;
 	bool timeToSync(){
-		//return (current_time-last_sync_time>=3600 || millis()<t);//3600 Numbers of seconds in one hour
+		//return (current_time-last_sync_time>=600 || millis()<t);//600 Numbers of seconds in 10 minutes
 		return false;//TODO: Remove this when actually updates time
 	}
 public:

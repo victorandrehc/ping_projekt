@@ -211,9 +211,9 @@ void TimeHandler::updateTime(){
 		t=millis();
 	}else{
 		unsigned long new_t=millis();
-		current_time+=(new_t-t)/1000;
 		if(new_t-t>=1000){
-			t=new_t;			
+			current_time+=(new_t-t)/1000;
+			t=(new_t/1000)*1000;//it has to update everytime the thousand position on millis() changes			
 			Serial.print("TIME: ");
 			Serial.println(current_time-seventy_years);
 			Serial.println(new_t);

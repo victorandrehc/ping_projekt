@@ -52,10 +52,7 @@ void setup() {
     employees_row.insert(employees_array[i]);
   }
   //employees_row.populate(myFile);
-  employees_row.print();
-
-
-  
+  employees_row.print();  
   
   //FSM INIT
   state=READING_EMPLOYEE;
@@ -156,6 +153,7 @@ void readEmployee(){
     while(millis()-t_delay<=1000);
   }
 }
+
 
 
 
