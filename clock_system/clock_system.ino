@@ -45,15 +45,6 @@ void setup() {
   //RFID INIT
   RC522.init();
 
-  Serial.print("Initializing SD card...");
-  if (!SD.begin(4)) {
-    Serial.println("initialization failed!");
-    return;
-  }
-  Serial.println("initialization done.");
-  File root=SD.open("/");
-  File myFile=getFile(root);
-  
   //FIFO INIT
   Employee employees_array[]={Employee("VICTOR",v1),Employee("PAUL",v2)};
   for(int i=0;i<2;i++){

@@ -89,7 +89,6 @@ public:
 	Employee* findEmployee(char *name,int* position);
 	int remove();
 	int clear();
-	void populate(File file);
 	
 };
 
