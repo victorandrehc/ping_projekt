@@ -126,12 +126,12 @@ void readEmployee(){
       Serial.print(RC522.serNum[i],HEX); //to print card detail in Hexa Decimal format
     }
     Serial.println();
-    EmployeeCell *emp=employees_row.find(RC522.serNum,NULL);
-    Serial.println(emp->employee.name);
-    emp->employee.printId();
+    Employee *emp=employees_row.findEmployee(RC522.serNum,NULL);
+    Serial.println(emp->name);
+    emp->printId();
     Time timestamp;
     timestamp.timestamp=time.getCurrentTime();
-    emp->employee.timestamps.insert(timestamp);
+    emp->timestamps.insert(timestamp);
     Serial.println();
     Serial.println();
     time.printDate();
@@ -140,20 +140,4 @@ void readEmployee(){
     while(millis()-t_delay<=1000);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
