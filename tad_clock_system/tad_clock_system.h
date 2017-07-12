@@ -4,10 +4,16 @@
 #include <Arduino.h>
 #include <inttypes.h>
 #include <SD.h>
+#include <SPI.h>
+#include <Ethernet.h>
+#include <EthernetUdp.h>
+
 #define NAME_LEN 10
 #define ID_LEN 5
 #define NAME_SEPARATOR 0x3D
 #define ID_SEPARATOR 0x0A
+#define NTP_PACKET_SIZE 48
+#define timeServer "pool.ntp.org"//"time.nist.gov" // time.nist.gov NTP server
 
 
 
@@ -98,18 +104,23 @@ private:
 	unsigned long t;
 	unsigned long last_sync_time;
 	unsigned long current_time;
+	byte packetBuffer[ NTP_PACKET_SIZE];
+	EthernetUDP *udp;
 	bool timeToSync(){
-		//return (current_time-last_sync_time>=3600 || millis()<t);//3600 Numbers of seconds in 60 minutes
-		return false;//TODO: Remove this when actually updates time
+		return (current_time-last_sync_time>=3600 || millis()<t);//3600 Numbers of seconds in 60 minutes
+		//return false;//TODO: Remove this when actually updates time
 	}
+	void sendNTPpacket();
 public:
 	TimeHandler();
 	~TimeHandler(){};
-	void updateTime();
+	bool updateTime();
 	void printDate();
 	unsigned long getCurrentTime(){
 		return current_time;
 	}
+	void setUdp(EthernetUDP *udp_);
+	void getNTP();
 
 
 	

@@ -1,11 +1,12 @@
 #include <SPI.h>
 #include <RFID.h>
 #include <SD.h>
+#include <Ethernet.h>
+#include <EthernetUdp.h>
 
 #include "tad_clock_system.h"
 
 #include <inttypes.h>
-
 //FSM GLOBAL VARIABLES/OBJECTS
 const int change_state_button=45;
 const unsigned long t_debounce=50;
@@ -19,12 +20,19 @@ states_t state;
 //FIFO GLOBAL VARIABLES/OBJECTS
 EmployeeRow employees_row;
 
+//ETHERNET GLOBAL OBJECTS
+byte mac[] = {
+  0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
+};
+unsigned int localPort = 8888;       // local port to listen for UDP packets
+EthernetUDP Udp;
+
 //TIME HANDLER GLOBAL OBJECTS
 TimeHandler time;
 
 //RFID GLOBAL VARIABLES/OBJECTS
-const int SDA_DIO=9;
-const int RESET_DIO=8;
+const int SDA_DIO=5;
+const int RESET_DIO=4;
 
 //CREATE AN INSTANCE OF THE RFID LIBRARY
 RFID RC522(SDA_DIO, RESET_DIO);
@@ -41,7 +49,16 @@ unsigned char v1[5]={0xD6,0xFC,0x83,0x8D,0x24},v2[5]={0xD6,0xFC,0x83,0x8D,0x23};
 
 void setup() {
   Serial.begin(9600);
-  SPI.begin(); 
+  SPI.begin();
+  //ETHERNET BEGIN
+  if (Ethernet.begin(mac) == 0) {
+    Serial.println("Failed to configure Ethernet using DHCP");
+    // no point in carrying on, so do nothing forevermore:
+    for (;;)
+      ;
+  }
+  Udp.begin(localPort);
+  time.setUdp(&Udp); 
   //RFID INIT
   RC522.init();
 
@@ -58,6 +75,8 @@ void setup() {
   state=READING_EMPLOYEE;
   pinMode(change_state_button, INPUT);
   t_state=millis();
+  time.getNTP();
+  Serial.println("SETUP FINISHED");
 }
 
 void loop() {
@@ -91,8 +110,10 @@ void loop() {
         state=READING_EMPLOYEE;
         Serial.println("RESETING FSM");
   }
-  time.updateTime();
-
+  bool is_upload_time=time.updateTime();
+  if(is_upload_time==true){
+    Serial.println("UPLOAD TIME");
+  }
 }
 
 unsigned long deltat(){
@@ -153,7 +174,7 @@ void readEmployee(){
       Time timestamp;
       timestamp.timestamp=time.getCurrentTime();
       emp->timestamps.insert(timestamp);
-      
+
       Serial.println();
     }else{
       Serial.println("EMPLOYEE NOT FOUND");
@@ -162,3 +183,7 @@ void readEmployee(){
     while(millis()-t_delay<=1000);
   }
 }
+
+
+
+
