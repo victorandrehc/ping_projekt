@@ -120,10 +120,7 @@ public:
 		return current_time;
 	}
 	void setUdp(EthernetUDP *udp_);
-	void getNTP();
-
-
-	
+	void getNTP();	
 };
 
 #endif
