@@ -14,7 +14,7 @@
 #define ID_SEPARATOR 0x0A
 #define NTP_PACKET_SIZE 48
 #define timeServer "pool.ntp.org"//"time.nist.gov" // time.nist.gov NTP server
-
+#define UPLOAD_TIME 23
 
 
 class Time{
@@ -108,7 +108,7 @@ private:
 	EthernetUDP *udp;
 	bool timeToSync(){
 		return (current_time-last_sync_time>=3600 || millis()<t);//3600 Numbers of seconds in 60 minutes
-		//return false;//TODO: Remove this when actually updates time
+		//return true;//TODO: Remove this when actually updates time
 	}
 	void sendNTPpacket();
 public:

@@ -224,13 +224,14 @@ bool TimeHandler::updateTime(){
 		t=millis();
 		unsigned long epoch=current_time-seventy_years;
 		hours=(epoch  % 86400L) / 3600;
+		Serial.println(hours);
 	}else{
 		current_time=last_sync_time+(millis()-t)/1000;
 		//Serial.print("TIME: ");
 		//Serial.println(current_time-seventy_years);
 		//Serial.println(millis());
 	}
-	return (hours==23);
+	return (hours==UPLOAD_TIME);
 }
 
 void TimeHandler::printDate(){
