@@ -177,6 +177,23 @@ EmployeeCell* EmployeeRow::find(char* name,int* position){
 	*position=-1;
 	return NULL;	
 }
+EmployeeCell* EmployeeRow::find(int position){
+	if(position>=len){
+		return NULL;
+	}
+	if(position==0){
+		return first;
+	}else{
+		EmployeeCell* pivo=first;
+		for(int p=1; p<position;p++){				
+				pivo=pivo->next;
+		}
+		if(pivo->next!=NULL){
+			return pivo->next;
+		}
+	}
+	return NULL;
+}
 
 Employee* EmployeeRow::findEmployee(unsigned char * id,int* position){
 	EmployeeCell* emp=find(id,position);
@@ -194,7 +211,14 @@ Employee* EmployeeRow::findEmployee(char* name,int* position){
 		return NULL;
 	}
 }
-
+Employee* EmployeeRow::findEmployee(int position){
+	EmployeeCell* emp=find(position);
+	if(emp!=NULL){
+		return &(emp->employee);
+	}else{
+		return NULL;
+	}
+}
 int EmployeeRow::remove(){
 	if(first!=NULL){
 		EmployeeCell* removed_employee=first;
@@ -310,5 +334,12 @@ void UploadDataHandler::print(){
 }
 
 void UploadDataHandler::upload(){
-	
+	Serial.println(employee_row->getLength());
+	int employee_row_length=employee_row->getLength();
+	for(int i=0;i<employee_row_length;i++){
+		Employee* e=employee_row->findEmployee(i);
+		Serial.println(e->name);
+	}
+
+
 }

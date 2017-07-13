@@ -47,6 +47,9 @@ public:
 	void print();
 	unsigned long remove();
 	int clear();
+	int getLength(){
+		return len;
+	}
 };
 
 class Employee
@@ -93,10 +96,15 @@ public:
 	void print();
 	EmployeeCell* find(unsigned char* id,int* position);
 	EmployeeCell* find(char* name,int* position);
+	EmployeeCell* find(int position);
 	Employee* findEmployee(unsigned char* id,int* position);
 	Employee* findEmployee(char *name,int* position);
+	Employee* findEmployee(int position);
 	int remove();
 	int clear();
+	int getLength(){
+		return len;
+	}
 	
 };
 
