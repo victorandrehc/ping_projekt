@@ -34,9 +34,10 @@ public:
 };
 
 class TimeRow{
+private:
+	int len;
 public:
 	TimeCell* first;
-	int len;
 	TimeRow(){
 		len=0;
 		first=NULL;
@@ -44,7 +45,7 @@ public:
 	~TimeRow(){};
 	void insert(Time t);
 	void print();
-	int remove();
+	unsigned long remove();
 	int clear();
 };
 
@@ -79,8 +80,9 @@ public:
 };
 
 class EmployeeRow{
-public:
+private:
 	int len;
+public:
 	EmployeeCell* first;
 	EmployeeRow(){
 		len=0;
@@ -121,6 +123,20 @@ public:
 	}
 	void setUdp(EthernetUDP *udp_);
 	void getNTP();	
+};
+
+class UploadDataHandler{
+private:
+	EmployeeRow *employee_row;
+public:
+	UploadDataHandler(){};
+	~UploadDataHandler(){};
+	void setEmployeeRow(EmployeeRow *e){
+		employee_row=e;
+	};
+	void print();
+	void upload();
+	
 };
 
 #endif

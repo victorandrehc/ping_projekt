@@ -38,19 +38,20 @@ void TimeRow::print(){
 	Serial.print(len);
 }
 
-int TimeRow::remove(){
+unsigned long TimeRow::remove(){
 	if(first!=NULL){
 		TimeCell* removed_time=first;
+		unsigned long result=removed_time->time.timestamp;
 		first=removed_time->next;
 		free(removed_time);
 		len--;
-		return 0;
+		return result;
 	}
-	return 1;	
+	return 0;	
 }
 int TimeRow::clear(){
-	while(!remove());
-	return 0;
+	while(remove());
+	return 1;
 }
 
 Employee::Employee(String name_,unsigned char * id_){
@@ -200,14 +201,14 @@ int EmployeeRow::remove(){
 		first=removed_employee->next;
 		free(removed_employee);
 		len--;
-		return 0;
+		return 1;
 	}
-	return 1;
+	return 0;
 }
 
 int EmployeeRow::clear(){
-	while(!remove());
-	return 0;
+	while(remove());
+	return 1;
 }
 
 TimeHandler::TimeHandler(){
@@ -302,4 +303,12 @@ void TimeHandler::getNTP(){
   	}
   	Ethernet.maintain();
 
+}
+
+void UploadDataHandler::print(){
+	employee_row->print();
+}
+
+void UploadDataHandler::upload(){
+	
 }

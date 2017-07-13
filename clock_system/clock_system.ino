@@ -30,6 +30,9 @@ EthernetUDP Udp;
 //TIME HANDLER GLOBAL OBJECTS
 TimeHandler time;
 
+//UploadDataHandler Object;
+UploadDataHandler upload_data_handler;
+
 //RFID GLOBAL VARIABLES/OBJECTS
 const int SDA_DIO=5;
 const int RESET_DIO=4;
@@ -70,7 +73,7 @@ void setup() {
   }
   //employees_row.populate(myFile);
   employees_row.print();  
-  
+  upload_data_handler.setEmployeeRow(&employees_row);
   //FSM INIT
   state=READING_EMPLOYEE;
   pinMode(change_state_button, INPUT);
@@ -111,8 +114,9 @@ void loop() {
         Serial.println("RESETING FSM");
   }
   bool is_upload_time=time.updateTime();
-  if(is_upload_time==true){
+  if(is_upload_time==true || true){
     Serial.println("UPLOAD TIME");
+    upload_data_handler.upload();
   }
 }
 
@@ -183,6 +187,9 @@ void readEmployee(){
     while(millis()-t_delay<=1000);
   }
 }
+
+
+
 
 
 
