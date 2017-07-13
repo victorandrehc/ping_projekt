@@ -259,23 +259,32 @@ bool TimeHandler::updateTime(){
 	return (hours==UPLOAD_TIME);
 }
 
+void TimeHandler::humanDate(unsigned long time,int* hours, int* minutes, int* seconds){
+	unsigned long epoch=time-seventy_years;
+	*hours=(epoch  % 86400L) / 3600;
+	*minutes=(epoch  % 3600) / 60;
+	*seconds=(epoch % 60);
+
+}
+
 void TimeHandler::printDate(){
 	
 
-	unsigned long epoch=current_time-seventy_years;
-	Serial.print((epoch  % 86400L) / 3600); // print the hour (86400 equals secs per day)
+	int hours, minutes,seconds;
+	humanDate(current_time,&hours,&minutes,&seconds);
+	Serial.print(hours); // print the hour (86400 equals secs per day)
     Serial.print(':');
-    if (((epoch % 3600) / 60) < 10) {
+    if (minutes < 10) {
       // In the first 10 minutes of each hour, we'll want a leading '0'
       Serial.print('0');
     }
-    Serial.print((epoch  % 3600) / 60); // print the minute (3600 equals secs per minute)
+    Serial.print(minutes); // print the minute (3600 equals secs per minute)
     Serial.print(':');
-    if ((epoch % 60) < 10) {
+    if (seconds < 10) {
       // In the first 10 seconds of each minute, we'll want a leading '0'
       Serial.print('0');
     }
-    Serial.print(epoch % 60); // print the second
+    Serial.print(seconds); // print the second
   
 }
 void TimeHandler::setUdp(EthernetUDP *udp_){
@@ -334,11 +343,28 @@ void UploadDataHandler::print(){
 }
 
 void UploadDataHandler::upload(){
-	Serial.println(employee_row->getLength());
 	int employee_row_length=employee_row->getLength();
 	for(int i=0;i<employee_row_length;i++){
 		Employee* e=employee_row->findEmployee(i);
-		Serial.println(e->name);
+		if(e->timestamps.getLength()>=2){
+			//TODO: SEND DATA TO CLOUD
+			Serial.println(e->name);
+			Serial.print("[");
+			while(e->timestamps.getLength()>=2){
+				unsigned long timestamps[]={e->timestamps.remove(),e->timestamps.remove()};
+				int hours,minutes,seconds;
+				char date[8];
+				TimeHandler().humanDate(timestamps[0],&hours,&minutes,&seconds);
+				sprintf(date,"%02i:%02i:%02i",hours,minutes,seconds);
+				Serial.print(date);
+				TimeHandler().humanDate(timestamps[1],&hours,&minutes,&seconds);
+				sprintf(date,"%02i:%02i:%02i",hours,minutes,seconds);
+				Serial.print(", ");
+				Serial.print(date);
+			}
+			Serial.println("]");	
+		}
+		
 	}
 
 

@@ -114,8 +114,7 @@ void loop() {
         Serial.println("RESETING FSM");
   }
   bool is_upload_time=time.updateTime();
-  if(is_upload_time==true || true){
-    Serial.println("UPLOAD TIME");
+  if(is_upload_time==true){
     upload_data_handler.upload();
   }
 }
@@ -178,7 +177,6 @@ void readEmployee(){
       Time timestamp;
       timestamp.timestamp=time.getCurrentTime();
       emp->timestamps.insert(timestamp);
-
       Serial.println();
     }else{
       Serial.println("EMPLOYEE NOT FOUND");
@@ -187,6 +185,10 @@ void readEmployee(){
     while(millis()-t_delay<=1000);
   }
 }
+
+
+
+
 
 
 
