@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "ping-173708",
+  "private_key_id": "ff31617ab3d6398d903fe5a5f442c5a8dc663b05",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDrWdzzx39dvu8P\nJeKO4pI1Y6hsJ7VjtBMDKjVv1W7Z3+zwp3QRC6/s/vSNMwWv4V7xR4PLVdCzeccw\nbEq+mtN7DsvKNBPs0pzayQYAhtynK9IzYUtNLYYgqTqM32BgVfjP6/dBObvgqMjv\nyCXaQj/G62pS9Kma912OTyG6yKpG/mwXKiLynL+GByd7BYFe2CNPNTcBhWKC+Int\nu8cpcbgOx8ZHyHwpmY5eXaMfTOUm4B4YwEwGb4erI2C990xJxQnv6gPQKSZ7X7ej\nKCyEdgg5KB92/mrqZvKw2thEhtPaERKi3r0r0u3SilVIwA27jzQwL8s0952osUwh\nE/GG2KK5AgMBAAECggEAEmGR2q5NmcZESIQWdj9m2OmgKVZOmetiAsDErKfYQQb2\nq/MAIyatBk8BTZfbDVoGPsTtm69nneTYdEU47zsLYlSNAQ1hMwFeA85ofBkMWbgX\n8jBan7v6+kkNTBxUHCIKzT5qMLtwG4NDMksI/ctnzMLtKm52YqaINYmjokFy3xlw\nfGdV5l2Owe5jqTrj8IKrtzCx3wki51NeZ9nosmgLiTsN1NeuQCa9zXRaWz6bKdwf\nIK5PvJt8e9BPYLTRvI4SusDzZrcKhk+6k8P20yByj7lRPpJBYEOwfpSwIPjXUlS3\nFixgt2Ol+rSuNyE0yrGYe7x1T+bikmmK6ooXpKioQQKBgQD+0OvBTW8zVsZ9jAGC\n1N1mFl6J7YGxVngNWKLQ9MAtc9sPNs9TwdqgogTRMZ5sjZMOCy1w2MqREZmZ/3NT\nzIyQR2hdOdw4M5GN18cUIGaz00/WvXGzBL9A+xWDf+FAD3/t3UBDRhR+6GMFCNao\ndPnOQMCiqeUjnLOPgq1AMg8dEQKBgQDsccpVDnX819g6hSHLZ2nvd/yPIgSlOORU\nT0LliQGRV+aJAgsVW6rs0170zwynPTwbvcdAKXT+oxnvGu7HoZDWPndj1ZJqBixl\nfLqqwRLSQEo4E1N0Rrrv1viviWfraIlSCnDksLwwbbvvmxejWVHYM8HUho+dXgjS\n2J4mWllLKQKBgA3latXx2RydoNl75yExZpmIosM21pnLM2TW7pointBbvxiHTqss\nqTWVYFngMNmOpvRfG61JxVI/+XZyfeGWCBxeKIzc+Ot/tHJd0BeC5NbtsS7uyeKP\nYbazeqrfMHOD5OAd7sE8cyWwmqXNo5cwOedLlLXKOhrFEu3CnJwhnr1hAoGAbGSN\n+Qg0FsFsowc9Qt4ZtmovIf7aWlQGeJANfuScD2FYkh6ZriTj6sXLljcE+fYchCsw\nGL3ooINs9CxIosPyfgUM/nt+L5S87ZmMiZMRacmHPMW/UGLMd/746p/3P/ggW7fl\noTFUVG855NIYuA3Oc2rmxOMbG21sZhxgA/0PSmECgYEAj72WcouWYbYcephrIpS/\nWgi6KppkFZnaijkjEeN23deDGIkX0cpr/iHszF1iZixjVPeEIMyQns1L2Y4OXKmu\nL05l+ssq6Dk5fUvmKYC3OycFffRnEEGN5B570JQqvKxCQZONbcjlmj+ZqlGkOPlt\nSZ1oEFJuOGRLf+vJQlKwWIA=\n-----END PRIVATE KEY-----\n",
+  "client_email": "https-victorandrehc-temboolive@ping-173708.iam.gserviceaccount.com",
+  "client_id": "101741046613234626279",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/https-victorandrehc-temboolive%40ping-173708.iam.gserviceaccount.com"
+}
