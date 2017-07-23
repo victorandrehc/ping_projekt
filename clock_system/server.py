@@ -14,15 +14,18 @@ class Client(threading.Thread):
 		super(Client, self).__init__(target=self.function)
 
 	def function(self):
-		received= self.clientsocket.recv(100)
-		received=received.split(';')
-		url=BASE_URL
-		url+='name='+received[0]+'&'
-		url+='in='+received[1]+'&'
-		url+='out='+received[2]
-		
-		returned=urllib2.urlopen(url).read() 
-		print returned
+		received= self.clientsocket.recv(4096)
+		received=received.split('\n')
+		received.pop()
+		for r in received:
+			r=r.split(';')
+			print r
+			url=BASE_URL
+			url+='name='+r[0]+'&'
+			url+='in='+r[1]+'&'
+			url+='out='+r[2]
+			returned=urllib2.urlopen(url).read() 
+			print returned
 		self.clientsocket.close()
 
 
@@ -32,7 +35,12 @@ class Client(threading.Thread):
 def main():
 	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	# Bind the socket to the port
-	server_address = ('localhost', 5555)
+	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+	s.connect(("8.8.8.8", 80))
+	host =s.getsockname()[0]
+	s.close()
+	print host
+	server_address = (host, 5555)
 	print >>sys.stderr, 'starting up on %s port %s' % server_address
 	sock.bind(server_address)
 	sock.listen(1)

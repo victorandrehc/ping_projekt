@@ -17,6 +17,7 @@
 #define UPLOAD_TIME 23
 
 
+
 class Time{
 public:
 	unsigned long timestamp;
@@ -137,8 +138,11 @@ public:
 class UploadDataHandler{
 private:
 	EmployeeRow *employee_row;
+	IPAddress server;
+	unsigned int port;
+	EthernetClient client; 
 public:
-	UploadDataHandler(){};
+	UploadDataHandler(IPAddress server_, unsigned int port_);
 	~UploadDataHandler(){};
 	void setEmployeeRow(EmployeeRow *e){
 		employee_row=e;

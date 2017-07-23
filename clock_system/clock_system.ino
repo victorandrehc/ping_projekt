@@ -31,7 +31,9 @@ EthernetUDP Udp;
 TimeHandler time;
 
 //UploadDataHandler Object;
-UploadDataHandler upload_data_handler;
+IPAddress server(192, 168, 2, 102);
+unsigned int server_port=5555;
+UploadDataHandler upload_data_handler(server,server_port);
 
 //RFID GLOBAL VARIABLES/OBJECTS
 const int SDA_DIO=5;
@@ -48,7 +50,7 @@ void printState();
 
 void readEmployee();
 
-unsigned char v1[5]={0xD6,0xFC,0x83,0x8D,0x24},v2[5]={0xD6,0xFC,0x83,0x8D,0x23};
+unsigned char v1[5]={0xD6,0xFC,0x83,0x8D,0x24},v2[5]={0xA6,0x8E,0x6B,0x90,0xD3};
 
 void setup() {
   Serial.begin(9600);
@@ -185,6 +187,8 @@ void readEmployee(){
     while(millis()-t_delay<=1000);
   }
 }
+
+
 
 
 

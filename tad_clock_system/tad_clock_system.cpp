@@ -337,33 +337,51 @@ void TimeHandler::getNTP(){
 
 }
 
+UploadDataHandler::UploadDataHandler(IPAddress server_, unsigned int port_){
+	server=server_;
+	port=port_;
+}
+
 void UploadDataHandler::print(){
 	employee_row->print();
 }
 
 void UploadDataHandler::upload(){
 	int employee_row_length=employee_row->getLength();
+
 	for(int i=0;i<employee_row_length;i++){
 		Employee* e=employee_row->findEmployee(i);
 		if(e->timestamps.getLength()>=2){
 			//TODO: SEND DATA TO CLOUD
-			Serial.println(e->name);
-			Serial.print("[");
-			while(e->timestamps.getLength()>=2){
-				unsigned long timestamps[]={e->timestamps.remove(),e->timestamps.remove()};
-				int hours,minutes,seconds;
-				char date[8];
-				TimeHandler().humanDate(timestamps[0],&hours,&minutes,&seconds);
-				sprintf(date,"%02i:%02i:%02i",hours,minutes,seconds);
-				Serial.print(date);
-				TimeHandler().humanDate(timestamps[1],&hours,&minutes,&seconds);
-				sprintf(date,"%02i:%02i:%02i",hours,minutes,seconds);
-				Serial.print(", ");
-				Serial.print(date);
+			Serial.println(client.connected());
+			if(!client.connected() && client.connect(server,port)){
+				Serial.println("connected");
+			} else {
+				// if you didn't get a connection to the server:
+				Serial.println("connection failed");
 			}
-			Serial.println("]");	
+			if(client.connected()){
+				while(e->timestamps.getLength()>=2){
+					unsigned long timestamps[]={e->timestamps.remove(),e->timestamps.remove()};
+					int hours,minutes,seconds;
+					char date_in[8],date_out[8];
+					TimeHandler().humanDate(timestamps[0],&hours,&minutes,&seconds);
+					sprintf(date_in,"%02i:%02i:%02i",hours,minutes,seconds);
+					TimeHandler().humanDate(timestamps[1],&hours,&minutes,&seconds);
+					sprintf(date_out,"%02i:%02i:%02i",hours,minutes,seconds);
+					
+					char msg[29];
+					sprintf(msg,"%s;%s;%s\n",e->name,date_in,date_out);
+					
+					Serial.println(msg);
+					client.write(msg);
+				}
+			}
 		}
 		
+	}
+	if(client.connected()){
+		client.stop();
 	}
 
 
