@@ -17,8 +17,8 @@ RST             D4
 
 BUTTON:
 	45 -> change state button
-	44 -> B2
-	42 -> B1
+	44 -> B2/enter
+	42 -> B1/change_letter
 
 
 GOOGLE SHEET

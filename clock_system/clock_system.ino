@@ -9,6 +9,9 @@
 #include <inttypes.h>
 //FSM GLOBAL VARIABLES/OBJECTS
 const int change_state_button=45;
+const int change_letter=42;
+const int enter=44;
+
 const unsigned long t_debounce=50;
 const unsigned long one_second=1000;
 uint8_t number_seconds=0,number_minutes=0;
