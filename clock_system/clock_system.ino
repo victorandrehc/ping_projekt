@@ -191,6 +191,8 @@ void readEmployee(){
       timestamp.timestamp=time.getCurrentTime();
       emp->timestamps.insert(timestamp);
       Serial.println();
+      employees_row.print();
+      Serial.println();
     }else{
       Serial.println("EMPLOYEE NOT FOUND");
     }    
@@ -200,7 +202,6 @@ void readEmployee(){
 }
 
 void reset_new_employee_state(){
-  Serial.println("rr");
   new_employee_state=INIT;
   postion_new_name=0;
   memset(new_name,0,NAME_LEN);
@@ -297,4 +298,8 @@ void write_new_employee(){
         break;
   }
 }
+
+
+
+
 

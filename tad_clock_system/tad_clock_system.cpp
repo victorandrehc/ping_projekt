@@ -362,15 +362,12 @@ void UploadDataHandler::upload(){
 			if(client.connected()){
 				while(e->timestamps.getLength()>=2){
 					unsigned long timestamps[]={e->timestamps.remove(),e->timestamps.remove()};
-					int hours,minutes,seconds;
-					char date_in[8],date_out[8];
-					TimeHandler().humanDate(timestamps[0],&hours,&minutes,&seconds);
-					sprintf(date_in,"%02i:%02i:%02i",hours,minutes,seconds);
-					TimeHandler().humanDate(timestamps[1],&hours,&minutes,&seconds);
-					sprintf(date_out,"%02i:%02i:%02i",hours,minutes,seconds);
-					
-					char msg[NAME_LEN+19];
-					sprintf(msg,"%s;%s;%s\n",e->name,date_in,date_out);
+					int hours_1,minutes_1,seconds_1;
+					int hours_2,minutes_2,seconds_2;
+					TimeHandler().humanDate(timestamps[0],&hours_1,&minutes_1,&seconds_1);
+					TimeHandler().humanDate(timestamps[1],&hours_2,&minutes_2,&seconds_2);
+					char msg[29];
+					sprintf(msg,"%s;%02i:%02i:%02i;%02i:%02i:%02i\n",e->name,hours_1,minutes_1,seconds_1,hours_2,minutes_2,seconds_2);
 					
 					Serial.println(msg);
 					client.write(msg);
