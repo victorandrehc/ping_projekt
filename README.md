@@ -6,20 +6,35 @@ PINOUT
  
 RFID:
 RC522 MODULE    MEGA
-SDA             D5
-SCK             D52
-MOSI            D51
-MISO            D50
-IRQ             N/A
-GND             GND
-RST             D4
-3.3V            3.3.3V
+
+SDA 			-> pin 05
+SCK				-> pin 52
+MOSI			-> pin 51
+MISO			-> pin 50
+IRQ				-> N/A
+GND				-> GND
+RST				-> pin 04
+3.3V            -> 3.3V
 
 BUTTON:
 	45 -> change state button
 	44 -> B2/enter
 	42 -> B1/change_letter
 	R=200 OHM
+
+LCD:
+	LCD 1		-> GND
+	LCD 2		-> 5V
+	LCD 3		-> GND
+	LCD 4/RS 	-> pin 22
+	LCD 5		-> GND
+	LCD 6/E 	-> pin 23
+	LCD 11/D4	-> pin 30
+	LCD 12/D5 	-> pin 31
+	LCD 13/D6 	-> pin 32
+	LCD 14/D7	-> pin 33
+	LCD 15		-> 5V
+	LCD 16		-> GND
 
 
 GOOGLE SHEET
