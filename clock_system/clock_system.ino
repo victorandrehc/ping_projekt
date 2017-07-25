@@ -10,7 +10,7 @@
 //FSM GLOBAL VARIABLES/OBJECTS
 const int change_state_button=45;
 const int change_letter=42;
-const int enter=44;
+const int enter_button=44;
 
 const unsigned long t_debounce=50;
 const unsigned long one_second=1000;
@@ -21,12 +21,14 @@ enum main_states_t {READING_EMPLOYEE,INTERMEDIARY_1,WRITING_NEW_EMPLOYEE,INTERME
 main_states_t main_state;
 
 unsigned long t_new_employee_state=0;
-enum new_employee_states_t {READING_ID_1,READING_ID_2,NEXT_LETTER,NEXT_POSITION};
+enum new_employee_states_t {INIT,READING_ID_1,READING_ID_2,IDLE,NEXT_LETTER,ENTER};
 new_employee_states_t new_employee_state;
 
 char new_name[NAME_LEN];
 int postion_new_name=0;
-char letter='A';
+char letter=64;
+unsigned char id_1[ID_LEN];
+bool enter_pressed_once=false;
 
 //FIFO GLOBAL VARIABLES/OBJECTS
 EmployeeRow employees_row;
@@ -59,6 +61,7 @@ unsigned long deltat(unsigned long t);
 void printState();
 void readEmployee();
 void reset_new_employee_state();
+void write_new_employee();
 
 unsigned char v1[5]={0xD6,0xFC,0x83,0x8D,0x24},v2[5]={0xA6,0x8E,0x6B,0x90,0xD3};
 
@@ -78,17 +81,13 @@ void setup() {
   RC522.init();
 
   //FIFO INIT
-  Employee employees_array[]={Employee("VICTOR",v1),Employee("PAUL",v2)};
-  for(int i=0;i<2;i++){
-    //TODO: make it read from card
-    employees_row.insert(employees_array[i]);
-  }
-  //employees_row.populate(myFile);
   employees_row.print();  
   upload_data_handler.setEmployeeRow(&employees_row);
   //FSM INIT
   main_state=READING_EMPLOYEE;
   pinMode(change_state_button, INPUT);
+  pinMode(enter_button, INPUT);
+  pinMode(change_letter, INPUT);
   t_main_state=millis();
   time.getNTP();
   Serial.println("SETUP FINISHED");
@@ -107,14 +106,17 @@ void loop() {
       case INTERMEDIARY_1:
         if(deltat(t_main_state)>=t_debounce && digitalRead(change_state_button)==LOW){
           main_state=WRITING_NEW_EMPLOYEE;
+          reset_new_employee_state();
+          printState();
         }
         break;
       case WRITING_NEW_EMPLOYEE:
         //TODO: WRITING_EMPLOYEE
-        printState();
+        write_new_employee();
         if(digitalRead(change_state_button)==HIGH){
           main_state=INTERMEDIARY_2;
           t_main_state=millis();
+          reset_new_employee_state();
         }
         break;
       case INTERMEDIARY_2:
@@ -194,6 +196,105 @@ void readEmployee(){
     }    
     unsigned long t_delay=millis();
     while(millis()-t_delay<=1000);
+  }
+}
+
+void reset_new_employee_state(){
+  Serial.println("rr");
+  new_employee_state=INIT;
+  postion_new_name=0;
+  memset(new_name,0,NAME_LEN);
+  letter=64;
+  memset(id_1,0,ID_LEN);
+  enter_pressed_once=false;
+}
+
+void write_new_employee(){ 
+  switch (new_employee_state) {
+      case INIT:
+        Serial.println("\nINSERT YOUR CARD");
+        new_employee_state=READING_ID_1;
+        break;
+      case READING_ID_1:
+        if (RC522.isCard()){
+          RC522.readCardSerial();
+          Serial.println();
+          for(int i=0;i<5;i++){
+             Serial.print(RC522.serNum[i],HEX); //to print card detail in Hexa Decimal format
+             id_1[i]=RC522.serNum[i];
+          }
+          unsigned long t_delay=millis();
+          while(millis()-t_delay<=1000);
+          Serial.println("\nINSERT YOUR CARD AGAIN");
+          new_employee_state=READING_ID_2;
+        }
+        break;
+      case READING_ID_2:        
+        if (RC522.isCard()){
+          RC522.readCardSerial();
+          bool equal;
+          Serial.println();
+          for(int i=0;i<5;i++){
+             Serial.print(RC522.serNum[i],HEX); //to print card detail in Hexa Decimal format
+             equal=(id_1[i]==RC522.serNum[i]);
+          }
+          unsigned long t_delay=millis();
+          while(millis()-t_delay<=1000);
+          if(equal==true){
+            new_employee_state=IDLE;
+            Serial.println("\nCARDS MATCH\nUSE KEYBOARD TO INSERT A NAME");
+          }else{
+            new_employee_state=INIT;
+            Serial.println("\nERROR: TRY AGAIN");
+          }
+        }
+        break;
+      case IDLE:
+        if(digitalRead(change_letter)==HIGH){
+          t_new_employee_state=millis();
+          new_employee_state=NEXT_LETTER;
+        }else if(digitalRead(enter_button)==HIGH){
+          t_new_employee_state=millis();
+          new_employee_state=ENTER;
+        }
+        break;
+      case NEXT_LETTER:
+        if(deltat(t_new_employee_state)>=t_debounce && digitalRead(change_letter)==LOW){
+          if(letter!='Z'){
+            letter++;
+          }else{
+            letter='A';
+          }
+        new_name[postion_new_name]=letter;
+          enter_pressed_once=false;
+          Serial.println(new_name);
+          new_employee_state=IDLE;
+        }
+        break;
+      case ENTER:
+        if(deltat(t_new_employee_state)>=(2*t_debounce) && digitalRead(enter_button)==LOW){
+          if(enter_pressed_once==false){
+            letter=64;
+            postion_new_name=(postion_new_name+1)%NAME_LEN;
+            enter_pressed_once=true;
+          }else{
+            Serial.println(new_name);
+            for(int i=0;i<5;i++){
+              Serial.print(id_1[i],HEX);
+            }
+            Serial.println();
+            Employee emp(new_name,id_1);
+            employees_row.insert(emp);
+            reset_new_employee_state();
+            main_state=READING_EMPLOYEE;
+          }
+          new_employee_state=IDLE;  
+        }
+        
+        break;
+      default:
+        reset_new_employee_state();
+        break;
   }
 }
 
