@@ -81,6 +81,11 @@ void setup() {
   RC522.init();
 
   //FIFO INIT
+  /*Employee employees_array[]={Employee("AABBCCDDEE",v2)};
+  for(int i=0;i<1;i++){
+    //TODO: make it read from card
+    employees_row.insert(employees_array[i]);
+  }*/
   employees_row.print();  
   upload_data_handler.setEmployeeRow(&employees_row);
   //FSM INIT
@@ -276,7 +281,7 @@ void write_new_employee(){
         if(deltat(t_new_employee_state)>=(2*t_debounce) && digitalRead(enter_button)==LOW){
           if(enter_pressed_once==false){
             letter=64;
-            postion_new_name=(postion_new_name+1)%NAME_LEN;
+            postion_new_name=(postion_new_name+1)%(NAME_LEN-1);//NAME_LEN-1 because the last position must be \0
             enter_pressed_once=true;
           }else{
             Serial.println(new_name);
@@ -298,8 +303,3 @@ void write_new_employee(){
         break;
   }
 }
-
-
-
-
-

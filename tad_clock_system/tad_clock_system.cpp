@@ -130,6 +130,10 @@ void EmployeeRow::print(){
 		Serial.print("    ");
 		Serial.print(pivo->employee.name);
 		Serial.print(" ");
+		for (int i=0;i<5;i++){
+			Serial.print(pivo->employee.id[i],HEX);
+		}
+		Serial.print(" ");
 		pivo->employee.timestamps.print();
 		if(pivo->next!=NULL){
 			Serial.println(",");
@@ -366,7 +370,7 @@ void UploadDataHandler::upload(){
 					int hours_2,minutes_2,seconds_2;
 					TimeHandler().humanDate(timestamps[0],&hours_1,&minutes_1,&seconds_1);
 					TimeHandler().humanDate(timestamps[1],&hours_2,&minutes_2,&seconds_2);
-					char msg[29];
+					char msg[NAME_LEN+19];
 					sprintf(msg,"%s;%02i:%02i:%02i;%02i:%02i:%02i\n",e->name,hours_1,minutes_1,seconds_1,hours_2,minutes_2,seconds_2);
 					
 					Serial.println(msg);

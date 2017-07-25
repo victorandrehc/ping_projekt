@@ -8,7 +8,7 @@
 #include <Ethernet.h>
 #include <EthernetUdp.h>
 
-#define NAME_LEN 10
+#define NAME_LEN 11
 #define ID_LEN 5
 #define NAME_SEPARATOR 0x3D
 #define ID_SEPARATOR 0x0A
