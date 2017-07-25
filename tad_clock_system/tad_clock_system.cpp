@@ -353,7 +353,6 @@ void UploadDataHandler::upload(){
 		Employee* e=employee_row->findEmployee(i);
 		if(e->timestamps.getLength()>=2){
 			//TODO: SEND DATA TO CLOUD
-			Serial.println(client.connected());
 			if(!client.connected() && client.connect(server,port)){
 				Serial.println("connected");
 			} else {
@@ -370,7 +369,7 @@ void UploadDataHandler::upload(){
 					TimeHandler().humanDate(timestamps[1],&hours,&minutes,&seconds);
 					sprintf(date_out,"%02i:%02i:%02i",hours,minutes,seconds);
 					
-					char msg[29];
+					char msg[NAME_LEN+19];
 					sprintf(msg,"%s;%s;%s\n",e->name,date_in,date_out);
 					
 					Serial.println(msg);

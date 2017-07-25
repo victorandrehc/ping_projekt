@@ -16,9 +16,17 @@ const unsigned long t_debounce=50;
 const unsigned long one_second=1000;
 uint8_t number_seconds=0,number_minutes=0;
 
-unsigned long t_state=0;
-enum states_t {READING_EMPLOYEE,INTERMEDIARY_1,WRITING_NEW_EMPLOYEE,INTERMEDIARY_2};
-states_t state;
+unsigned long t_main_state=0;
+enum main_states_t {READING_EMPLOYEE,INTERMEDIARY_1,WRITING_NEW_EMPLOYEE,INTERMEDIARY_2};
+main_states_t main_state;
+
+unsigned long t_new_employee_state=0;
+enum new_employee_states_t {READING_ID_1,READING_ID_2,NEXT_LETTER,NEXT_POSITION};
+new_employee_states_t new_employee_state;
+
+char new_name[NAME_LEN];
+int postion_new_name=0;
+char letter='A';
 
 //FIFO GLOBAL VARIABLES/OBJECTS
 EmployeeRow employees_row;
@@ -47,11 +55,10 @@ RFID RC522(SDA_DIO, RESET_DIO);
 
 //CREATE AN FILE OBJECT
 File getFile(File dir);
-unsigned long deltat();
-void resett();
+unsigned long deltat(unsigned long t);
 void printState();
-
 void readEmployee();
+void reset_new_employee_state();
 
 unsigned char v1[5]={0xD6,0xFC,0x83,0x8D,0x24},v2[5]={0xA6,0x8E,0x6B,0x90,0xD3};
 
@@ -80,58 +87,57 @@ void setup() {
   employees_row.print();  
   upload_data_handler.setEmployeeRow(&employees_row);
   //FSM INIT
-  state=READING_EMPLOYEE;
+  main_state=READING_EMPLOYEE;
   pinMode(change_state_button, INPUT);
-  t_state=millis();
+  t_main_state=millis();
   time.getNTP();
   Serial.println("SETUP FINISHED");
 }
 
 void loop() {
-  switch (state) {
+  switch (main_state) {
       case READING_EMPLOYEE:
         //TODO: READING EMPLOYEE
         readEmployee();
         if(digitalRead(change_state_button)==HIGH){
-          state=INTERMEDIARY_1;
-          resett();
+          main_state=INTERMEDIARY_1;
+          t_main_state=millis();
         }
         break;
       case INTERMEDIARY_1:
-        if(deltat()>=t_debounce && digitalRead(change_state_button==LOW)){
-          state=WRITING_NEW_EMPLOYEE;
+        if(deltat(t_main_state)>=t_debounce && digitalRead(change_state_button)==LOW){
+          main_state=WRITING_NEW_EMPLOYEE;
         }
         break;
       case WRITING_NEW_EMPLOYEE:
         //TODO: WRITING_EMPLOYEE
+        printState();
         if(digitalRead(change_state_button)==HIGH){
-          state=INTERMEDIARY_2;
-          resett();
+          main_state=INTERMEDIARY_2;
+          t_main_state=millis();
         }
         break;
       case INTERMEDIARY_2:
-        if(deltat()>=t_debounce && digitalRead(change_state_button==LOW)){
-          state=READING_EMPLOYEE;
+        if(deltat(t_main_state)>=t_debounce && digitalRead(change_state_button)==LOW){
+          main_state=READING_EMPLOYEE;
         }
         break;
       default:
-        state=READING_EMPLOYEE;
+        main_state=READING_EMPLOYEE;
         Serial.println("RESETING FSM");
   }
   bool is_upload_time=time.updateTime();
-  if(is_upload_time==true){
+  if(is_upload_time==true || true){
     upload_data_handler.upload();
   }
 }
 
-unsigned long deltat(){
-  return(millis()-t_state);
+unsigned long deltat(unsigned long t){
+  return(millis()-t);
 }
-void resett(){
-  t_state=millis(); 
-}
+
 void printState(){
-  switch (state) {
+  switch (main_state) {
       case READING_EMPLOYEE:
         Serial.print("READING_EMPLOYEE");  
         break;
@@ -190,17 +196,4 @@ void readEmployee(){
     while(millis()-t_delay<=1000);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 

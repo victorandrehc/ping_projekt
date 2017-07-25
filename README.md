@@ -19,6 +19,7 @@ BUTTON:
 	45 -> change state button
 	44 -> B2/enter
 	42 -> B1/change_letter
+	R=200 OHM
 
 
 GOOGLE SHEET

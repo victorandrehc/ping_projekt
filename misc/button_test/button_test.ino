@@ -17,5 +17,6 @@ void loop(){
 	Serial.println(digitalRead(b1));
 	Serial.print("b2: ");
 	Serial.println(digitalRead(b2));
+  delay(100);
 
 }
