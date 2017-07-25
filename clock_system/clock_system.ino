@@ -3,6 +3,7 @@
 #include <SD.h>
 #include <Ethernet.h>
 #include <EthernetUdp.h>
+#include <LiquidCrystal.h>
 
 #include "tad_clock_system.h"
 
@@ -29,6 +30,9 @@ int postion_new_name=0;
 char letter=64;
 unsigned char id_1[ID_LEN];
 bool enter_pressed_once=false;
+
+//LCD
+LiquidCrystal lcd(22, 23, 30,31,32,33);
 
 //FIFO GLOBAL VARIABLES/OBJECTS
 EmployeeRow employees_row;
@@ -88,14 +92,22 @@ void setup() {
   }*/
   employees_row.print();  
   upload_data_handler.setEmployeeRow(&employees_row);
+  //LCD INIT
+  lcd.begin(16, 2);
+  lcd.clear();
+  lcd.setCursor(2,0);
+  lcd.print("INITIALIZING");
+
   //FSM INIT
   main_state=READING_EMPLOYEE;
   pinMode(change_state_button, INPUT);
   pinMode(enter_button, INPUT);
   pinMode(change_letter, INPUT);
+  lcd.clear();
   t_main_state=millis();
   time.getNTP();
   Serial.println("SETUP FINISHED");
+
 }
 
 void loop() {
@@ -186,6 +198,7 @@ void readEmployee(){
     Serial.println();
     int p;
     Employee *emp=employees_row.findEmployee(RC522.serNum,&p);//search employee by ID
+    lcd.clear();
     if(emp!=NULL){ // if employee exists in the FIFO Adds to it a timestamp
       Serial.println(emp->name);
       emp->printId();
@@ -196,11 +209,35 @@ void readEmployee(){
       Serial.println();
       employees_row.print();
       Serial.println();
+      lcd.setCursor(0,0);
+      lcd.print(emp->name);
+      lcd.setCursor(0,1);
+      char id[10];
+      sprintf(id,"%02X%02X%02X%02X%02X",RC522.serNum[0],RC522.serNum[1],RC522.serNum[2],RC522.serNum[3],RC522.serNum[4]);
+      lcd.print(id);
     }else{
       Serial.println("EMPLOYEE NOT FOUND");
+      lcd.setCursor(0,0);
+      lcd.print("EMPLOYEE MISSING");
+      lcd.setCursor(0,1);
+      char id[10];
+      sprintf(id,"%02X%02X%02X%02X%02X",RC522.serNum[0],RC522.serNum[1],RC522.serNum[2],RC522.serNum[3],RC522.serNum[4]);
+      lcd.print(id);
+      unsigned long t_delay=millis();// wait a second so user has time to remove card from reader
+      while(millis()-t_delay<=4000); 
     }    
     unsigned long t_delay=millis();// wait a second so user has time to remove card from reader
     while(millis()-t_delay<=1000);
+    lcd.clear();
+  }else{
+    lcd.setCursor(0,0);
+    lcd.print("INSERT CARD");
+    lcd.setCursor(0,1);
+    int hours,minutes,seconds;
+    time.humanDate(&hours,&minutes,&seconds);
+    char date[8];
+    sprintf(date,"%02i:%02i:%02i",hours,minutes,seconds);
+    lcd.print(date);
   }
 }
 
@@ -224,6 +261,9 @@ void write_new_employee(){
   switch (new_employee_state) {
       case INIT:
         Serial.println("\nINSERT YOUR CARD");
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print("INSERT YOUR CARD");
         new_employee_state=READING_ID_1;
         break;
       case READING_ID_1:
@@ -237,6 +277,10 @@ void write_new_employee(){
           unsigned long t_delay=millis();
           while(millis()-t_delay<=1000);
           Serial.println("\nINSERT YOUR CARD AGAIN");
+          lcd.setCursor(0,0);
+          lcd.print("INSERT YOUR CARD");
+          lcd.setCursor(0,1);
+          lcd.print("AGAIN");
           new_employee_state=READING_ID_2;
         }
         break;
@@ -254,6 +298,16 @@ void write_new_employee(){
           if(equal==true){
             new_employee_state=IDLE;
             Serial.println("\nCARDS MATCH\nUSE KEYBOARD TO INSERT A NAME");
+            lcd.clear();
+            lcd.setCursor(0,0);
+            lcd.print("CARDS MATCH");
+            unsigned long t_delay=millis();
+            while(millis()-t_delay<=1000);
+            lcd.setCursor(0,0);
+            lcd.print("USE KEYBOARD");
+            lcd.setCursor(0,1);
+            lcd.print("TO INSERT A NAME");
+            lcd.setCursor(0,0);
           }else{
             new_employee_state=INIT;
             Serial.println("\nERROR: TRY AGAIN");
@@ -279,6 +333,9 @@ void write_new_employee(){
         new_name[postion_new_name]=letter;
           enter_pressed_once=false;//reset flag that says if enter was just pressed
           Serial.println(new_name);
+          lcd.clear();
+          lcd.setCursor(0,0);
+          lcd.print(new_name);
           new_employee_state=IDLE;
         }
         break;
@@ -294,6 +351,15 @@ void write_new_employee(){
               Serial.print(id_1[i],HEX);
             }
             Serial.println();
+            lcd.clear();
+            lcd.setCursor(0,0);
+            lcd.print(new_name);
+            lcd.setCursor(0,1);
+            lcd.print("RECORDED");
+            unsigned long t_delay=millis();
+            while(millis()-t_delay<=1000);
+            lcd.clear();
+            lcd.setCursor(0,0);
             Employee emp(new_name,id_1);
             employees_row.insert(emp);
             reset_new_employee_state();
@@ -307,3 +373,7 @@ void write_new_employee(){
         break;
   }
 }
+
+
+
+

@@ -263,6 +263,9 @@ void TimeHandler::humanDate(unsigned long time,int* hours, int* minutes, int* se
 	*seconds=(epoch % 60);
 
 }
+void TimeHandler::humanDate(int* hours, int* minutes, int* seconds){
+	humanDate(current_time,hours,minutes,seconds);
+}
 
 void TimeHandler::printDate(){
 	

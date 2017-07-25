@@ -137,6 +137,7 @@ public:
 	bool updateTime();
 	void printDate();
 	void humanDate(unsigned long time,int* hours, int* minutes, int* seconds);
+	void humanDate(int* hours, int* minutes, int* seconds);
 	unsigned long getCurrentTime(){
 		return current_time;
 	}
