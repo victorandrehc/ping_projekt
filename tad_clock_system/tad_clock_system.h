@@ -19,6 +19,7 @@
 
 
 class Time{
+	//class that manages Time, it has a timestamp, it contais all the relevant information of a TimeCell in a simple object
 public:
 	unsigned long timestamp;
 	Time(){};
@@ -26,6 +27,7 @@ public:
 };
 
 class TimeCell{
+	//timeCell it is the cell from TimeRow FiFO
 public:
 	Time time;
 	TimeCell* next;
@@ -35,6 +37,7 @@ public:
 };
 
 class TimeRow{
+	//TimeRow is the head from Time FIFO, it points to the first item. Should be contained on an Employee object
 private:
 	int len;
 public:
@@ -55,6 +58,7 @@ public:
 
 class Employee
 {
+	//it has the relevant information from an Employee, name ID and Time Fifo from this Employee
 private:
 public:
 	char name[NAME_LEN];
@@ -64,7 +68,7 @@ public:
 	Employee(){};
 	Employee(String name_,unsigned char* id_);
 	Employee(char*name_,unsigned char* id_);
-	~Employee(){
+	~Employee(){//clear timestamp FIFO avoiding memory leak
 		timestamps.clear();
 	};
 	int compareId(unsigned char * id_);
@@ -74,6 +78,7 @@ public:
 };
 
 class EmployeeCell{
+	//same as TimeCell but to EmployeeRow
 public:
 	Employee employee;
 	EmployeeCell* next;
@@ -84,6 +89,7 @@ public:
 };
 
 class EmployeeRow{
+	//EmployeeRow is the head from EMPLOYEE FIFO, it points to the first item. Should be contained a global object
 private:
 	int len;
 public:
@@ -95,12 +101,12 @@ public:
 	~EmployeeRow(){};
 	void insert(Employee e);
 	void print();
-	EmployeeCell* find(unsigned char* id,int* position);
-	EmployeeCell* find(char* name,int* position);
-	EmployeeCell* find(int position);
-	Employee* findEmployee(unsigned char* id,int* position);
-	Employee* findEmployee(char *name,int* position);
-	Employee* findEmployee(int position);
+	EmployeeCell* find(unsigned char* id,int* position); //find employee by id returns the cell
+	EmployeeCell* find(char* name,int* position); //find employee by name returns the cell
+	EmployeeCell* find(int position); //find employee by position returns the cell
+	Employee* findEmployee(unsigned char* id,int* position); //find employee by id returns the object
+	Employee* findEmployee(char *name,int* position); //find employee by name returns the object
+	Employee* findEmployee(int position);//find employee by position returns the object
 	int remove();
 	int clear();
 	int getLength(){
@@ -110,18 +116,21 @@ public:
 };
 
 class TimeHandler{
+	//make the Time Handling, the timestamp is a unsigned long variable and represents 
+	//how many seconds passed after 01/01/1900 00:00:00
 private:
-	const unsigned long seventy_years = 2208988800UL;
+	const unsigned long seventy_years = 2208988800UL; //represents 01/01/1970 00:00:00 was 
+													  //introduced to gain space atthe variable
 	unsigned long t;
 	unsigned long last_sync_time;
 	unsigned long current_time;
 	byte packetBuffer[ NTP_PACKET_SIZE];
 	EthernetUDP *udp;
-	bool timeToSync(){
+	bool timeToSync(){ //return TRUE every Hour or when millis() overflows
 		return (current_time-last_sync_time>=3600 || millis()<t);//3600 Numbers of seconds in 60 minutes
 		//return true;//TODO: Remove this when actually updates time
 	}
-	void sendNTPpacket();
+	void sendNTPpacket(); //send the NTP requistion to the Server
 public:
 	TimeHandler();
 	~TimeHandler(){};
@@ -132,10 +141,14 @@ public:
 		return current_time;
 	}
 	void setUdp(EthernetUDP *udp_);
-	void getNTP();	
+	void getNTP();//sync the time
 };
 
 class UploadDataHandler{
+	//Handles with the update data to google sheet throught a tellnet server.
+	//this server is on server.py, his IP address and PORT must be passed from construtor
+	//de Tellnet server can stays in other network
+	//but must have be acessible from outside thought port fowarding in this case
 private:
 	EmployeeRow *employee_row;
 	IPAddress server;

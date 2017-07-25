@@ -99,16 +99,15 @@ void setup() {
 }
 
 void loop() {
-  switch (main_state) {
+  switch (main_state) { //FSM that controls the modes (reading hours data or recording a new employee)
       case READING_EMPLOYEE:
-        //TODO: READING EMPLOYEE
         readEmployee();
         if(digitalRead(change_state_button)==HIGH){
           main_state=INTERMEDIARY_1;
           t_main_state=millis();
         }
         break;
-      case INTERMEDIARY_1:
+      case INTERMEDIARY_1: //buffer state to avoid bouncing
         if(deltat(t_main_state)>=t_debounce && digitalRead(change_state_button)==LOW){
           main_state=WRITING_NEW_EMPLOYEE;
           reset_new_employee_state();
@@ -116,7 +115,6 @@ void loop() {
         }
         break;
       case WRITING_NEW_EMPLOYEE:
-        //TODO: WRITING_EMPLOYEE
         write_new_employee();
         if(digitalRead(change_state_button)==HIGH){
           main_state=INTERMEDIARY_2;
@@ -124,7 +122,7 @@ void loop() {
           reset_new_employee_state();
         }
         break;
-      case INTERMEDIARY_2:
+      case INTERMEDIARY_2: //buffer state to avoid bouncing
         if(deltat(t_main_state)>=t_debounce && digitalRead(change_state_button)==LOW){
           main_state=READING_EMPLOYEE;
         }
@@ -134,7 +132,7 @@ void loop() {
         Serial.println("RESETING FSM");
   }
   bool is_upload_time=time.updateTime();
-  if(is_upload_time==true || true){
+  if(is_upload_time==true){ //is_upload_time is true only if it is 23 hours and the NTP was just synced
     upload_data_handler.upload();
   }
 }
@@ -178,8 +176,8 @@ File getFile(File dir){
 }
 
 void readEmployee(){
-  if (RC522.isCard()){
-    /* If so then get its serial number */
+  if (RC522.isCard()){ //If so then get its serial number 
+    
     RC522.readCardSerial();
     Serial.println("Card detected:");
     for(int i=0;i<5;i++){
@@ -187,8 +185,8 @@ void readEmployee(){
     }
     Serial.println();
     int p;
-    Employee *emp=employees_row.findEmployee(RC522.serNum,&p);
-    if(emp!=NULL){
+    Employee *emp=employees_row.findEmployee(RC522.serNum,&p);//search employee by ID
+    if(emp!=NULL){ // if employee exists in the FIFO Adds to it a timestamp
       Serial.println(emp->name);
       emp->printId();
 
@@ -201,12 +199,13 @@ void readEmployee(){
     }else{
       Serial.println("EMPLOYEE NOT FOUND");
     }    
-    unsigned long t_delay=millis();
+    unsigned long t_delay=millis();// wait a second so user has time to remove card from reader
     while(millis()-t_delay<=1000);
   }
 }
 
 void reset_new_employee_state(){
+  //reset writng new employee fsm to original state
   new_employee_state=INIT;
   postion_new_name=0;
   memset(new_name,0,NAME_LEN);
@@ -216,6 +215,12 @@ void reset_new_employee_state(){
 }
 
 void write_new_employee(){ 
+  //Writing new employee FSM
+  //it is designed to be inside another FSM
+  // USer must first insert the card twice
+  //only if both readings are right, user must insert a name
+  //to insert a name user must select a letter using change_letter_button and press enter
+  //is user presses enter twice in a row the name and Id are saved as am Employee object on FIFO
   switch (new_employee_state) {
       case INIT:
         Serial.println("\nINSERT YOUR CARD");
@@ -272,18 +277,18 @@ void write_new_employee(){
             letter='A';
           }
         new_name[postion_new_name]=letter;
-          enter_pressed_once=false;
+          enter_pressed_once=false;//reset flag that says if enter was just pressed
           Serial.println(new_name);
           new_employee_state=IDLE;
         }
         break;
       case ENTER:
         if(deltat(t_new_employee_state)>=(2*t_debounce) && digitalRead(enter_button)==LOW){
-          if(enter_pressed_once==false){
+          if(enter_pressed_once==false){ // if it is first time in a row enter is pressed
             letter=64;
             postion_new_name=(postion_new_name+1)%(NAME_LEN-1);//NAME_LEN-1 because the last position must be \0
             enter_pressed_once=true;
-          }else{
+          }else{ //if enter was pressed twice in a row
             Serial.println(new_name);
             for(int i=0;i<5;i++){
               Serial.print(id_1[i],HEX);
@@ -296,7 +301,6 @@ void write_new_employee(){
           }
           new_employee_state=IDLE;  
         }
-        
         break;
       default:
         reset_new_employee_state();

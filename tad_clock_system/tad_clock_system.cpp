@@ -55,8 +55,6 @@ int TimeRow::clear(){
 }
 
 Employee::Employee(String name_,unsigned char * id_){
-	//timestamps=NULL;
-	//id=id_;
 	for(int i=0;i<ID_LEN;i++){
 		id[i]=id_[i];
 	}
@@ -64,8 +62,6 @@ Employee::Employee(String name_,unsigned char * id_){
 };
 
 Employee::Employee(char*name_,unsigned char * id_){
-	//timestamps=NULL;
-	//id=id_;
 	for(int i=0;i<ID_LEN;i++){
 		id[i]=id_[i];
 	}
@@ -96,12 +92,10 @@ void Employee::printId(){
 	}
 }
 void EmployeeCell::employeeCpy(Employee e){
-	//employee.name=e.name;
 	strcpy(employee.name,e.name);
 	for(int i=0;i<ID_LEN;i++){
 		employee.id[i]=e.id[i];
 	}
-	//employee.id=e.id;
 	employee.timestamps=e.timestamps;
 }
 
