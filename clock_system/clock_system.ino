@@ -112,15 +112,19 @@ void setup() {
   /*int p;
   Employee *emp=employees_row.findEmployee(v1,&p);
   Time timestamp;
-  timestamp.timestamp=time.getCurrentTime();
-  emp->timestamps.insert(timestamp);
-  timestamp.timestamp=time.getCurrentTime();
-  emp->timestamps.insert(timestamp);
+  for (int i=0;i<5;i++){
+    timestamp.timestamp=time.getCurrentTime();
+    emp->timestamps.insert(timestamp);
+    timestamp.timestamp=time.getCurrentTime();
+    emp->timestamps.insert(timestamp);  
+  }  
   emp=employees_row.findEmployee(v2,&p);
-  timestamp.timestamp=time.getCurrentTime();
-  emp->timestamps.insert(timestamp);
-  timestamp.timestamp=time.getCurrentTime();
-  emp->timestamps.insert(timestamp);  
+  for (int i=0;i<5;i++){
+    timestamp.timestamp=time.getCurrentTime();
+    emp->timestamps.insert(timestamp);
+    timestamp.timestamp=time.getCurrentTime();
+    emp->timestamps.insert(timestamp);  
+  }  
   employees_row.print();*/
   Serial.println("SETUP FINISHED");
 
@@ -389,6 +393,7 @@ void write_new_employee(){
         break;
   }
 }
+
 
 
 
