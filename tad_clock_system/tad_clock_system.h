@@ -15,7 +15,7 @@
 #define NTP_PACKET_SIZE 48
 #define timeServer "pool.ntp.org"//"time.nist.gov" // time.nist.gov NTP server
 #define UPLOAD_TIME 23
-#define GMT 2
+#define GMT 2L
 #define FINISH_PACK "FINISH\n"
 
 

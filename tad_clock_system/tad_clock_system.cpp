@@ -327,7 +327,7 @@ void TimeHandler::getNTP(){
 	    // combine the four bytes (two words) into a long integer
 	    // this is NTP time (seconds since Jan 1 1900):
 
-	    current_time = (highWord << 16 | lowWord)+1+GMT*3600;
+	    current_time = (highWord << 16 | lowWord)+1+GMT*3600L;
 	    last_sync_time=current_time;
 
 	    Serial.println("GETTING DATE FROM NTP");
