@@ -16,6 +16,7 @@
 #define timeServer "pool.ntp.org"//"time.nist.gov" // time.nist.gov NTP server
 #define UPLOAD_TIME 23
 #define GMT 2
+#define FINISH_PACK "FINISH\n"
 
 
 class Time{

@@ -6,6 +6,7 @@ import sys
 
 BASE_URL="https://script.google.com/macros/s/AKfycbyhGjBXVw6pPQhnUutMd0s-GjPRjVhjZuZX0paQNCrfJ2j93pF-/exec?"
 OK="Ok"
+FINISH="FINISH"
 
 class Client(threading.Thread):
 	"""docstring for Client"""
@@ -14,18 +15,24 @@ class Client(threading.Thread):
 		super(Client, self).__init__(target=self.function)
 
 	def function(self):
-		received= self.clientsocket.recv(4096)
-		received=received.split('\n')
-		received.pop()
-		for r in received:
-			r=r.split(';')
-			print r
-			url=BASE_URL
-			url+='name='+r[0]+'&'
-			url+='in='+r[1]+'&'
-			url+='out='+r[2]
-			returned=urllib2.urlopen(url).read() 
-			print returned
+		stop=False
+		while stop==False:
+			received= self.clientsocket.recv(4096)
+			received=received.split('\n')
+			received.pop()
+			for r in received:
+				if r!=FINISH:
+					r=r.split(';')
+					print r
+					url=BASE_URL
+					url+='name='+r[0]+'&'
+					url+='in='+r[1]+'&'
+					url+='out='+r[2]
+					returned=urllib2.urlopen(url).read() 
+					print returned
+				else:
+					stop=True
+					break
 		self.clientsocket.close()
 
 

@@ -85,11 +85,12 @@ void setup() {
   RC522.init();
 
   //FIFO INIT
-  /*Employee employees_array[]={Employee("AABBCCDDEE",v2)};
-  for(int i=0;i<1;i++){
+  /*Employee employees_array[]={Employee("VICTOR",v1),Employee("AABBCCDDEE",v2)};
+  for(int i=0;i<2;i++){
     //TODO: make it read from card
     employees_row.insert(employees_array[i]);
   }*/
+
   employees_row.print();  
   upload_data_handler.setEmployeeRow(&employees_row);
   //LCD INIT
@@ -106,6 +107,21 @@ void setup() {
   lcd.clear();
   t_main_state=millis();
   time.getNTP();
+  
+  //TODO: REMOVE THIS CHUNCK
+  /*int p;
+  Employee *emp=employees_row.findEmployee(v1,&p);
+  Time timestamp;
+  timestamp.timestamp=time.getCurrentTime();
+  emp->timestamps.insert(timestamp);
+  timestamp.timestamp=time.getCurrentTime();
+  emp->timestamps.insert(timestamp);
+  emp=employees_row.findEmployee(v2,&p);
+  timestamp.timestamp=time.getCurrentTime();
+  emp->timestamps.insert(timestamp);
+  timestamp.timestamp=time.getCurrentTime();
+  emp->timestamps.insert(timestamp);  
+  employees_row.print();*/
   Serial.println("SETUP FINISHED");
 
 }
@@ -373,7 +389,4 @@ void write_new_employee(){
         break;
   }
 }
-
-
-
 

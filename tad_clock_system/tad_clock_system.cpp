@@ -349,37 +349,34 @@ void UploadDataHandler::print(){
 
 void UploadDataHandler::upload(){
 	int employee_row_length=employee_row->getLength();
-
+	bool is_connection_needed=false;
 	for(int i=0;i<employee_row_length;i++){
 		Employee* e=employee_row->findEmployee(i);
 		if(e->timestamps.getLength()>=2){
-			//TODO: SEND DATA TO CLOUD
-			if(!client.connected() && client.connect(server,port)){
-				Serial.println("connected");
-			} else {
-				// if you didn't get a connection to the server:
-				Serial.println("connection failed");
-			}
-			if(client.connected()){
-				while(e->timestamps.getLength()>=2){
-					unsigned long timestamps[]={e->timestamps.remove(),e->timestamps.remove()};
-					int hours_1,minutes_1,seconds_1;
-					int hours_2,minutes_2,seconds_2;
-					TimeHandler().humanDate(timestamps[0],&hours_1,&minutes_1,&seconds_1);
-					TimeHandler().humanDate(timestamps[1],&hours_2,&minutes_2,&seconds_2);
-					char msg[NAME_LEN+19];
-					sprintf(msg,"%s;%02i:%02i:%02i;%02i:%02i:%02i\n",e->name,hours_1,minutes_1,seconds_1,hours_2,minutes_2,seconds_2);
-					
-					Serial.println(msg);
-					client.write(msg);
-				}
+			is_connection_needed=true;
+		}
+	}
+
+	if(is_connection_needed==true && client.connect(server,port)){
+		Serial.println("connected");
+		for(int i=0;i<employee_row_length;i++){
+			Employee* e=employee_row->findEmployee(i);
+			while(e->timestamps.getLength()>=2){
+				unsigned long timestamps[]={e->timestamps.remove(),e->timestamps.remove()};
+				int hours_1,minutes_1,seconds_1;
+				int hours_2,minutes_2,seconds_2;
+				TimeHandler().humanDate(timestamps[0],&hours_1,&minutes_1,&seconds_1);
+				TimeHandler().humanDate(timestamps[1],&hours_2,&minutes_2,&seconds_2);
+				char msg[NAME_LEN+19];
+				sprintf(msg,"%s;%02i:%02i:%02i;%02i:%02i:%02i\n",e->name,hours_1,minutes_1,seconds_1,hours_2,minutes_2,seconds_2);
+				
+				Serial.println(msg);
+				client.write(msg);
 			}
 		}
-		
-	}
-	if(client.connected()){
+		client.write(FINISH_PACK);
 		client.stop();
+	}else if(is_connection_needed==true){
+		Serial.println("failed to connect");
 	}
-
-
 }
