@@ -349,18 +349,16 @@ void UploadDataHandler::print(){
 
 void UploadDataHandler::upload(){
 	int employee_row_length=employee_row->getLength();
-	bool is_connection_needed=false;
 	for(int i=0;i<employee_row_length;i++){
 		Employee* e=employee_row->findEmployee(i);
-		if(e->timestamps.getLength()>=2){
-			is_connection_needed=true;
+		if(e->timestamps.getLength()>=2 && !client.connected()){
+			if( client.connect(server,port)){
+				Serial.println("connected");
+			}else{
+				Serial.println("fail to connect");
+			}
 		}
-	}
-
-	if(is_connection_needed==true && client.connect(server,port)){
-		Serial.println("connected");
-		for(int i=0;i<employee_row_length;i++){
-			Employee* e=employee_row->findEmployee(i);
+		if(client.connected()){
 			while(e->timestamps.getLength()>=2){
 				unsigned long timestamps[]={e->timestamps.remove(),e->timestamps.remove()};
 				int hours_1,minutes_1,seconds_1;
@@ -372,11 +370,11 @@ void UploadDataHandler::upload(){
 				
 				Serial.println(msg);
 				client.write(msg);
-			}
+			}			
 		}
+	}
+	if(client.connected()){
 		client.write(FINISH_PACK);
 		client.stop();
-	}else if(is_connection_needed==true){
-		Serial.println("failed to connect");
 	}
 }
