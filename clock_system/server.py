@@ -16,11 +16,14 @@ class Client(threading.Thread):
 
 	def function(self):
 		stop=False
+		last_received=""
 		while stop==False:
-			received= self.clientsocket.recv(4096)
-			received=received.split('\n')
-			received.pop()
-			for r in received:
+
+			received=last_received+self.clientsocket.recv(29)
+			print received
+			received_list=received.split('\n')
+			last_received=received_list.pop()
+			for r in received_list:
 				if r!=FINISH:
 					r=r.split(';')
 					print r
@@ -33,6 +36,7 @@ class Client(threading.Thread):
 				else:
 					stop=True
 					break
+		print "CLOSING CONNECTION"
 		self.clientsocket.close()
 
 

@@ -6,6 +6,6 @@ s = socket.socket(
 # - the normal http port
 s.connect(('192.168.2.102', 5555))
 s.send("VICTOR;08:00:00;12:00:00\n")
-s.send("aaaa;00:00:00;00:00:00\n")
+s.send("AABBCCDDEE;00:00:00;00:00:00\n")
 s.send("FINISH\n");
 s.close()
