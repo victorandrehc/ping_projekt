@@ -1,0 +1,474 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:arduino_shieldsNCL
+LIBS:rfid-rc522-module
+LIBS:TS-1109
+LIBS:schematic-cache
+EELAYER 25 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L ARDUINO_MEGA_SHIELD SHIELD
+U 1 1 597C2C02
+P 6950 3450
+F 0 "SHIELD" H 6550 5950 60  0000 C CNN
+F 1 "ARDUINO MEGA + ETHERNET SHIELD" H 6850 750 60  0000 C CNN
+F 2 "" H 6950 3450 60  0001 C CNN
+F 3 "" H 6950 3450 60  0001 C CNN
+	1    6950 3450
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5V #PWR?
+U 1 1 597C2EBE
+P 5100 1500
+F 0 "#PWR?" H 5100 1350 50  0001 C CNN
+F 1 "+5V" H 5100 1640 50  0000 C CNN
+F 2 "" H 5100 1500 50  0001 C CNN
+F 3 "" H 5100 1500 50  0001 C CNN
+	1    5100 1500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Earth #PWR?
+U 1 1 597C2EEF
+P 5100 1850
+F 0 "#PWR?" H 5100 1600 50  0001 C CNN
+F 1 "Earth" H 5100 1700 50  0001 C CNN
+F 2 "" H 5100 1850 50  0001 C CNN
+F 3 "" H 5100 1850 50  0001 C CNN
+	1    5100 1850
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3.3V #PWR?
+U 1 1 597C3086
+P 5300 1500
+F 0 "#PWR?" H 5300 1350 50  0001 C CNN
+F 1 "+3.3V" H 5300 1640 50  0000 C CNN
+F 2 "" H 5300 1500 50  0001 C CNN
+F 3 "" H 5300 1500 50  0001 C CNN
+	1    5300 1500
+	1    0    0    -1  
+$EndComp
+$Comp
+L LCD-016N002L LCD1
+U 1 1 597C31CF
+P 10150 5100
+F 0 "LCD1" H 9350 5500 50  0000 C CNN
+F 1 "LCD-016N002L" H 10850 5500 50  0000 C CNN
+F 2 "WC1602A" H 10150 5050 50  0001 C CIN
+F 3 "" H 10150 5100 50  0001 C CNN
+	1    10150 5100
+	1    0    0    -1  
+$EndComp
+$Comp
+L Earth #PWR?
+U 1 1 597C3278
+P 9400 5800
+F 0 "#PWR?" H 9400 5550 50  0001 C CNN
+F 1 "Earth" H 9400 5650 50  0001 C CNN
+F 2 "" H 9400 5800 50  0001 C CNN
+F 3 "" H 9400 5800 50  0001 C CNN
+	1    9400 5800
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5V #PWR?
+U 1 1 597C3298
+P 9500 5800
+F 0 "#PWR?" H 9500 5650 50  0001 C CNN
+F 1 "+5V" H 9500 5940 50  0000 C CNN
+F 2 "" H 9500 5800 50  0001 C CNN
+F 3 "" H 9500 5800 50  0001 C CNN
+	1    9500 5800
+	-1   0    0    1   
+$EndComp
+$Comp
+L Earth #PWR?
+U 1 1 597C32C7
+P 9600 5800
+F 0 "#PWR?" H 9600 5550 50  0001 C CNN
+F 1 "Earth" H 9600 5650 50  0001 C CNN
+F 2 "" H 9600 5800 50  0001 C CNN
+F 3 "" H 9600 5800 50  0001 C CNN
+	1    9600 5800
+	1    0    0    -1  
+$EndComp
+$Comp
+L Earth #PWR?
+U 1 1 597C3310
+P 9800 5800
+F 0 "#PWR?" H 9800 5550 50  0001 C CNN
+F 1 "Earth" H 9800 5650 50  0001 C CNN
+F 2 "" H 9800 5800 50  0001 C CNN
+F 3 "" H 9800 5800 50  0001 C CNN
+	1    9800 5800
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5V #PWR?
+U 1 1 597C346A
+P 10800 5800
+F 0 "#PWR?" H 10800 5650 50  0001 C CNN
+F 1 "+5V" H 10800 5940 50  0000 C CNN
+F 2 "" H 10800 5800 50  0001 C CNN
+F 3 "" H 10800 5800 50  0001 C CNN
+	1    10800 5800
+	-1   0    0    1   
+$EndComp
+$Comp
+L Earth #PWR?
+U 1 1 597C3482
+P 10900 5800
+F 0 "#PWR?" H 10900 5550 50  0001 C CNN
+F 1 "Earth" H 10900 5650 50  0001 C CNN
+F 2 "" H 10900 5800 50  0001 C CNN
+F 3 "" H 10900 5800 50  0001 C CNN
+	1    10900 5800
+	1    0    0    -1  
+$EndComp
+$Comp
+L RFID-RC522-MODULE RFID1
+U 1 1 597C371E
+P 4900 3350
+F 0 "RFID1" H 4900 3400 60  0000 C CNN
+F 1 "RFID-RC522-MODULE" H 4850 3500 60  0000 C CNN
+F 2 "" H 4900 3350 60  0000 C CNN
+F 3 "" H 4900 3350 60  0000 C CNN
+	1    4900 3350
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3.3V #PWR?
+U 1 1 597C3820
+P 5400 4000
+F 0 "#PWR?" H 5400 3850 50  0001 C CNN
+F 1 "+3.3V" H 5400 4140 50  0000 C CNN
+F 2 "" H 5400 4000 50  0001 C CNN
+F 3 "" H 5400 4000 50  0001 C CNN
+	1    5400 4000
+	-1   0    0    1   
+$EndComp
+$Comp
+L Earth #PWR?
+U 1 1 597C3869
+P 5100 4000
+F 0 "#PWR?" H 5100 3750 50  0001 C CNN
+F 1 "Earth" H 5100 3850 50  0001 C CNN
+F 2 "" H 5100 4000 50  0001 C CNN
+F 3 "" H 5100 4000 50  0001 C CNN
+	1    5100 4000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5100 1700 5950 1700
+Wire Wire Line
+	5100 1500 5100 1700
+Wire Wire Line
+	5950 1800 5100 1800
+Wire Wire Line
+	5100 1800 5100 1850
+Wire Wire Line
+	5950 1600 5300 1600
+Wire Wire Line
+	5300 1600 5300 1500
+Wire Wire Line
+	9400 5600 9400 5800
+Wire Wire Line
+	9500 5600 9500 5800
+Wire Wire Line
+	9600 5600 9600 5800
+Wire Wire Line
+	9700 5600 9700 6000
+Wire Wire Line
+	9700 6000 9200 6000
+Wire Wire Line
+	9200 6000 9200 4100
+Wire Wire Line
+	9200 4100 7850 4100
+Wire Wire Line
+	9800 5600 9800 5800
+Wire Wire Line
+	9900 5600 9900 6050
+Wire Wire Line
+	9900 6050 9100 6050
+Wire Wire Line
+	9100 6050 9100 4200
+Wire Wire Line
+	9100 4200 7850 4200
+Wire Wire Line
+	10400 5600 10400 6100
+Wire Wire Line
+	10400 6100 9000 6100
+Wire Wire Line
+	9000 6100 9000 4950
+Wire Wire Line
+	9000 4950 7850 4950
+Wire Wire Line
+	10500 5600 10500 6150
+Wire Wire Line
+	10500 6150 8900 6150
+Wire Wire Line
+	8900 6150 8900 5050
+Wire Wire Line
+	8900 5050 7850 5050
+Wire Wire Line
+	10600 5600 10600 6200
+Wire Wire Line
+	10600 6200 8800 6200
+Wire Wire Line
+	8800 6200 8800 5150
+Wire Wire Line
+	8800 5150 7850 5150
+Wire Wire Line
+	10700 5600 10700 6250
+Wire Wire Line
+	10700 6250 8700 6250
+Wire Wire Line
+	8700 6250 8700 5250
+Wire Wire Line
+	8700 5250 7850 5250
+Wire Wire Line
+	10800 5600 10800 5800
+Wire Wire Line
+	10900 5600 10900 5800
+Wire Wire Line
+	5400 3900 5400 4000
+Wire Wire Line
+	5100 3900 5100 4000
+Wire Wire Line
+	4650 3900 4650 4500
+Wire Wire Line
+	4650 4500 5950 4500
+Wire Wire Line
+	5950 4600 4800 4600
+Wire Wire Line
+	4800 4600 4800 3900
+Wire Wire Line
+	4500 3900 4500 4400
+Wire Wire Line
+	4500 4400 5950 4400
+Text GLabel 5250 4050 3    60   Input ~ 0
+RST
+Wire Wire Line
+	5250 3900 5250 4050
+Text GLabel 8000 2350 2    60   Input ~ 0
+RST
+Text GLabel 8000 2150 2    60   Input ~ 0
+SDA
+Wire Wire Line
+	7950 2150 7950 2200
+Wire Wire Line
+	7950 2200 7850 2200
+Wire Wire Line
+	7950 2150 8000 2150
+Wire Wire Line
+	8000 2350 7950 2350
+Wire Wire Line
+	7950 2350 7950 2300
+Wire Wire Line
+	7950 2300 7850 2300
+Text GLabel 4350 4050 3    60   Input ~ 0
+SDA
+Wire Wire Line
+	4350 3900 4350 4050
+$Comp
+L TS-1109 change_state_button
+U 1 1 597C4308
+P 3100 4700
+F 0 "change_state_button" H 2800 5000 50  0000 L BNN
+F 1 "TS-1109" H 2800 4350 50  0000 L BNN
+F 2 "SW_TS-1109" H 3100 4700 50  0001 L BNN
+F 3 "TS-1109" H 3100 4700 50  0001 L BNN
+F 4 "None" H 3100 4700 50  0001 L BNN "Price"
+F 5 "None" H 3100 4700 50  0001 L BNN "Package"
+F 6 "Best Inc." H 3100 4700 50  0001 L BNN "MF"
+F 7 "Unavailable" H 3100 4700 50  0001 L BNN "Availability"
+F 8 "Switch Tactile Spst-No 0.05a 12v" H 3100 4700 50  0001 L BNN "Description"
+	1    3100 4700
+	1    0    0    -1  
+$EndComp
+$Comp
+L TS-1109 change_letter_button
+U 1 1 597C43BC
+P 3100 6400
+F 0 "change_letter_button" H 2800 6700 50  0000 L BNN
+F 1 "TS-1109" H 2800 6050 50  0000 L BNN
+F 2 "SW_TS-1109" H 3100 6400 50  0001 L BNN
+F 3 "TS-1109" H 3100 6400 50  0001 L BNN
+F 4 "None" H 3100 6400 50  0001 L BNN "Price"
+F 5 "None" H 3100 6400 50  0001 L BNN "Package"
+F 6 "Best Inc." H 3100 6400 50  0001 L BNN "MF"
+F 7 "Unavailable" H 3100 6400 50  0001 L BNN "Availability"
+F 8 "Switch Tactile Spst-No 0.05a 12v" H 3100 6400 50  0001 L BNN "Description"
+	1    3100 6400
+	1    0    0    -1  
+$EndComp
+$Comp
+L TS-1109 Enter_button
+U 1 1 597C44CA
+P 3100 5550
+F 0 "Enter_button" H 2800 5850 50  0000 L BNN
+F 1 "TS-1109" H 2800 5200 50  0000 L BNN
+F 2 "SW_TS-1109" H 3100 5550 50  0001 L BNN
+F 3 "TS-1109" H 3100 5550 50  0001 L BNN
+F 4 "None" H 3100 5550 50  0001 L BNN "Price"
+F 5 "None" H 3100 5550 50  0001 L BNN "Package"
+F 6 "Best Inc." H 3100 5550 50  0001 L BNN "MF"
+F 7 "Unavailable" H 3100 5550 50  0001 L BNN "Availability"
+F 8 "Switch Tactile Spst-No 0.05a 12v" H 3100 5550 50  0001 L BNN "Description"
+	1    3100 5550
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3.3V #PWR?
+U 1 1 597C4600
+P 2100 4300
+F 0 "#PWR?" H 2100 4150 50  0001 C CNN
+F 1 "+3.3V" H 2100 4440 50  0000 C CNN
+F 2 "" H 2100 4300 50  0001 C CNN
+F 3 "" H 2100 4300 50  0001 C CNN
+	1    2100 4300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2100 4300 2100 6200
+Wire Wire Line
+	2100 6200 2600 6200
+Wire Wire Line
+	2600 4500 2100 4500
+Connection ~ 2100 4500
+Wire Wire Line
+	2600 5350 2100 5350
+Connection ~ 2100 5350
+$Comp
+L R R1
+U 1 1 597C478B
+P 2400 5050
+F 0 "R1" V 2480 5050 50  0000 C CNN
+F 1 "200" V 2400 5050 50  0000 C CNN
+F 2 "" V 2330 5050 50  0001 C CNN
+F 3 "" H 2400 5050 50  0001 C CNN
+	1    2400 5050
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R2
+U 1 1 597C47B8
+P 2400 5900
+F 0 "R2" V 2480 5900 50  0000 C CNN
+F 1 "200" V 2400 5900 50  0000 C CNN
+F 2 "" V 2330 5900 50  0001 C CNN
+F 3 "" H 2400 5900 50  0001 C CNN
+	1    2400 5900
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R3
+U 1 1 597C48EF
+P 2400 6750
+F 0 "R3" V 2480 6750 50  0000 C CNN
+F 1 "200" V 2400 6750 50  0000 C CNN
+F 2 "" V 2330 6750 50  0001 C CNN
+F 3 "" H 2400 6750 50  0001 C CNN
+	1    2400 6750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2400 4900 2600 4900
+Wire Wire Line
+	2400 5750 2600 5750
+Wire Wire Line
+	2400 6600 2600 6600
+$Comp
+L Earth #PWR?
+U 1 1 597C4A62
+P 2400 6050
+F 0 "#PWR?" H 2400 5800 50  0001 C CNN
+F 1 "Earth" H 2400 5900 50  0001 C CNN
+F 2 "" H 2400 6050 50  0001 C CNN
+F 3 "" H 2400 6050 50  0001 C CNN
+	1    2400 6050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Earth #PWR?
+U 1 1 597C4A88
+P 2400 6900
+F 0 "#PWR?" H 2400 6650 50  0001 C CNN
+F 1 "Earth" H 2400 6750 50  0001 C CNN
+F 2 "" H 2400 6900 50  0001 C CNN
+F 3 "" H 2400 6900 50  0001 C CNN
+	1    2400 6900
+	1    0    0    -1  
+$EndComp
+$Comp
+L Earth #PWR?
+U 1 1 597C4AED
+P 2400 5200
+F 0 "#PWR?" H 2400 4950 50  0001 C CNN
+F 1 "Earth" H 2400 5050 50  0001 C CNN
+F 2 "" H 2400 5200 50  0001 C CNN
+F 3 "" H 2400 5200 50  0001 C CNN
+	1    2400 5200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5950 5250 3700 5250
+Wire Wire Line
+	3700 5250 3700 5750
+Wire Wire Line
+	3700 5750 3600 5750
+Wire Wire Line
+	5950 5450 3750 5450
+Wire Wire Line
+	3750 5450 3750 6600
+Wire Wire Line
+	3750 6600 3600 6600
+Wire Wire Line
+	5950 5150 3700 5150
+Wire Wire Line
+	3700 5150 3700 4900
+Wire Wire Line
+	3700 4900 3600 4900
+$EndSCHEMATC
