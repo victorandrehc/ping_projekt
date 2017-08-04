@@ -1,4 +1,4 @@
-update=Sa 29 Jul 2017 09:24:04 CEST
+update=Sa 29 Jul 2017 10:07:06 CEST
 version=1
 last_client=kicad
 [pcbnew]
@@ -61,3 +61,13 @@ LibName29=valves
 LibName30=resources/Arduino_Shield_Modules_for_KiCad_V3/arduino_shieldsNCL
 LibName31=resources/some-kicad-components/lib/rfid-rc522-module
 LibName32=resources/TS-1109
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60

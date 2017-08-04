@@ -37,10 +37,10 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
-Title ""
-Date ""
-Rev ""
-Comp ""
+Title "IOT Stechuhr"
+Date "2017-07-29"
+Rev "v1.0"
+Comp "PING 2017"
 Comment1 ""
 Comment2 ""
 Comment3 ""
